@@ -8,6 +8,7 @@ gem "rails", "~> 7.1.3", ">= 7.1.3.4"
 # Project gems
 gem 'faraday', '~> 2.9', '>= 2.9.2'
 gem 'selenium-webdriver'
+gem 'tailwindcss-rails', '~> 2.6', '>= 2.6.1'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"

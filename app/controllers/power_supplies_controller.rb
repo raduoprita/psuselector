@@ -1,16 +1,6 @@
 class PowerSuppliesController < ApplicationController
   before_action :set_power_supply, only: %i[ show edit update destroy ]
 
-  PSU     = Struct.new(
-    *PowerSupply.column_names.map(&:to_sym) - [:id, :created_at, :updated_at]
-  )
-  PSUS    = []
-  ATX_MAP = {
-    # 'ATX V3.1 230V'     => 'ATX 3.1',
-    # 'ATX V3.0 230V'     => 'ATX 3.0',
-    'ETA & LAMBDA 230V' => 'ATX'
-  }
-
   # GET /power_supplies or /power_supplies.json
   def index
     @power_supplies = PowerSupply.all
@@ -68,70 +58,8 @@ class PowerSuppliesController < ApplicationController
   end
 
   def reprocess
-    redirect_to power_supplies_path
-  end
-  
-  def reprocess2
-    @cybenetics_base_url = 'https://www.cybenetics.com/'
-    @cybenetics_psu_url  = "#{@cybenetics_base_url}index.php?option=power-supplies"
-
-    PowerSupply.delete_all
-
-    @options = Selenium::WebDriver::Chrome::Options.new
-    @options.add_argument("--headless")
-
-    temp_key = manufacturer_links.keys.first
-    add_for_manufaturer(temp_key)
-
-    # manufacturer_links.keys.each do |link|
-    #   add_for_manufaturer(link)
-    # end
-
-    redirect_to power_supplies_path
-  end
-
-  private
-
-  def manufacturer_links
-    @manufacturer_links = {}
-    begin
-      driver = Selenium::WebDriver.for :chrome, options: @options
-      driver.navigate.to @cybenetics_psu_url
-      elements = driver.find_elements(:css, '#myTable th a')
-      elements.each { |e| @manufacturer_links[e.attribute(:href)] = e.text }
-    ensure
-      driver.quit
-    end
-    @manufacturer_links.except!(@manufacturer_links.keys.last)
-  end
-
-  def add_for_manufaturer(link)
-    begin
-      driver = Selenium::WebDriver.for :chrome, options: @options
-      driver.navigate.to link
-
-      ATX_MAP.each do |k,v|
-        sleep 5
-        add_all_for(driver, link, k, v)
-      end
-    ensure
-      driver.quit
-    end
-  end
-
-  def add_all_for(driver, link, button_text, atx_version)
-    button = driver.find_element(link_text: button_text)
-    button.click
-    sleep 5
-    trs = driver.find_elements(:css, '#myTable tr')
-    trs.shift(3).each do |tr|
-      data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
-
-      # TODO check if exists, only add if not
-
-      attrs = data + [@manufacturer_links[link], atx_version]
-      PSUS << PSU.new(*attrs)
-    end
+    ReprocessPsusJob.perform_later
+    redirect_to power_supplies_url
   end
 
   # Use callbacks to share common setup or constraints between actions.

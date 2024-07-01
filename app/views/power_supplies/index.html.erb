@@ -1,15 +1,73 @@
 <p style="color: green"><%= notice %></p>
-
-<h1>Power supplies</h1>
-
-<div id="power_supplies">
-  <% @power_supplies.each do |power_supply| %>
-    <%= render power_supply %>
-    <p>
-      <%= link_to "Show this power supply", power_supply %>
-    </p>
-  <% end %>
+<div class="bg-gray-800 block break-after-column">
+  <h1>Power supplies</h1>
 </div>
 
-<%= link_to "New power supply", new_power_supply_path %>
-<%= link_to "Reprocess PSUs", reprocess_power_supplies_path, data: { turbo: false } %>
+<div id="power_supplies" class="break-after-all">
+  <div class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          Brand
+        </th>
+        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          Model
+        </th>
+        <th scope="col" class="px-6 py-3">
+          ATX
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Form factor
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Wattage
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Avg efficiency
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Avg efficiency 5vsb
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Vampire power
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Avg pf
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Avg noise
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Efficiency rating
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Noise rating
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Release date
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Show
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Edit
+        </th>
+        <th scope="col" class="px-6 py-3">
+          Destroy
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @power_supplies.each do |power_supply| %>
+        <%= render partial: "psu_table", object: power_supply, as: :power_supply %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="">
+  <%= link_to "New power supply", new_power_supply_path %>
+  <%= link_to "Reprocess PSUs", reprocess_power_supplies_path, data: { turbo: false } %>
+</div>
