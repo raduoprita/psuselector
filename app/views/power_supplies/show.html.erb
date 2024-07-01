@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @power_supply %>
+
+<div>
+  <%= link_to "Edit this power supply", edit_power_supply_path(@power_supply) %> |
+  <%= link_to "Back to power supplies", power_supplies_path %>
+
+  <%= button_to "Destroy this power supply", @power_supply, method: :delete %>
+</div>

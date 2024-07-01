@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  model: MyString
+  atx_version: MyString
+  form_factor: MyString
+  wattage: 1
+  avg_efficiency: 9.99
+  avg_efficiency_5vsb: 9.99
+  vampire_power: 9.99
+  avg_pf: 9.99
+  avg_noise: 9.99
+  efficiency_rating: MyString
+  noise_rating: MyString
+  release_date: 2024-06-29
+
+two:
+  model: MyString
+  atx_version: MyString
+  form_factor: MyString
+  wattage: 1
+  avg_efficiency: 9.99
+  avg_efficiency_5vsb: 9.99
+  vampire_power: 9.99
+  avg_pf: 9.99
+  avg_noise: 9.99
+  efficiency_rating: MyString
+  noise_rating: MyString
+  release_date: 2024-06-29

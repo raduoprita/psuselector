@@ -1,0 +1,77 @@
+<%= form_with(model: power_supply) do |form| %>
+  <% if power_supply.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(power_supply.errors.count, "error") %> prohibited this power_supply from being saved:</h2>
+
+      <ul>
+        <% power_supply.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :model, style: "display: block" %>
+    <%= form.text_field :model %>
+  </div>
+
+  <div>
+    <%= form.label :atx_version, style: "display: block" %>
+    <%= form.text_field :atx_version %>
+  </div>
+
+  <div>
+    <%= form.label :form_factor, style: "display: block" %>
+    <%= form.text_field :form_factor %>
+  </div>
+
+  <div>
+    <%= form.label :wattage, style: "display: block" %>
+    <%= form.number_field :wattage %>
+  </div>
+
+  <div>
+    <%= form.label :avg_efficiency, style: "display: block" %>
+    <%= form.text_field :avg_efficiency %>
+  </div>
+
+  <div>
+    <%= form.label :avg_efficiency_5vsb, style: "display: block" %>
+    <%= form.text_field :avg_efficiency_5vsb %>
+  </div>
+
+  <div>
+    <%= form.label :vampire_power, style: "display: block" %>
+    <%= form.text_field :vampire_power %>
+  </div>
+
+  <div>
+    <%= form.label :avg_pf, style: "display: block" %>
+    <%= form.text_field :avg_pf %>
+  </div>
+
+  <div>
+    <%= form.label :avg_noise, style: "display: block" %>
+    <%= form.text_field :avg_noise %>
+  </div>
+
+  <div>
+    <%= form.label :efficiency_rating, style: "display: block" %>
+    <%= form.text_field :efficiency_rating %>
+  </div>
+
+  <div>
+    <%= form.label :noise_rating, style: "display: block" %>
+    <%= form.text_field :noise_rating %>
+  </div>
+
+  <div>
+    <%= form.label :release_date, style: "display: block" %>
+    <%= form.date_field :release_date %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

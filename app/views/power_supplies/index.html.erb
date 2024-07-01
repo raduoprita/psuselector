@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Power supplies</h1>
+
+<div id="power_supplies">
+  <% @power_supplies.each do |power_supply| %>
+    <%= render power_supply %>
+    <p>
+      <%= link_to "Show this power supply", power_supply %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New power supply", new_power_supply_path %>
+<%= link_to "Reprocess PSUs", reprocess_power_supplies_path, data: { turbo: false } %>
