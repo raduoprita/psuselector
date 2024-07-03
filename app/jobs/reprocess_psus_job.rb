@@ -81,7 +81,7 @@ class ReprocessPsusJob < ApplicationJob
     trs = @driver.find_elements(:css, '#myTable tr')[3..-1]
     trs.each do |tr|
       data  = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
-      if viable?(data)
+      if viable?(data) && unbuyable?(manufacturer)
         @logger.info "Got #{manufacturer} - #{data.first}"
         attrs = data + [manufacturer, atx_version]
         PSUS.update(attrs.first => PSU.new(*attrs))
@@ -94,5 +94,15 @@ class ReprocessPsusJob < ApplicationJob
       ['GOLD', 'PLATINUM', 'TITANIUM', 'DIAMOND'].include?(data[8]) &&
       data[9].start_with?('A') && data[9] != 'A-' &&
       data[2].to_i >= 1000
+  end
+
+  def unbuyable?(manufacturer)
+    [
+      'LIAN LI',
+      'PCCOOLER',
+      'VETROO',
+      'MICRONICS',
+      'SHARKOON',
+    ].include?(manufacturer)
   end
 end

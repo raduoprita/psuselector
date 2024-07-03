@@ -1,14 +1,14 @@
-<div style="display: flex; flex-direction: column">
+<div class="left-0" style="display: flex; flex-direction: column">
   <p style="color: green"><%= notice %></p>
   <div class="bg-gray-800">
     <h1>Power supplies</h1>
   </div>
-  <div id="power_supplies" class="flow-root break-after-all">
-    <div class="relative overflow-x-auto">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+  <div id="power_supplies">
+    <div>
+      <table class="w-full text-xs left-0 text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          <th scope="row" class="px-6 py-4 text-gray-900 dark:text-white">
             Filter
           </th>
           <th>
@@ -105,8 +105,8 @@
           <th scope="col" class="px-6 py-3">
             Avg noise
           </th>
-          <th scope="col" class="px-6 py-3">
-            Efficiency rating
+          <th scope="col" class="px-6 py-1">
+            Efficiency <br />rating
           </th>
           <th scope="col" class="px-6 py-3">
             Noise rating
