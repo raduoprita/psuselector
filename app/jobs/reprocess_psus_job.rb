@@ -1,6 +1,8 @@
 class ReprocessPsusJob < ApplicationJob
   queue_as :default
 
+  # TODO add logging
+
   CYBENETICS_PSU_URL = "https://www.cybenetics.com/index.php?option=power-supplies"
 
   PSU     = Struct.new(
@@ -8,29 +10,34 @@ class ReprocessPsusJob < ApplicationJob
   )
   PSUS    = {}
   ATX_MAP = {
-    'ETA & LAMBDA 230V' => 'ATX',
+    # 'ETA & LAMBDA 230V' => 'ATX',
     'ATX V3.0 230V'     => 'ATX 3.0',
     'ATX V3.1 230V'     => 'ATX 3.1',
   }
 
   def perform
+    @logger = Logger.new(STDOUT)
+
     PowerSupply.delete_all
     begin
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
       @driver = Selenium::WebDriver.for :chrome, options: @options
 
-      temp_key = manufacturer_links.keys.first
-      add_for_manufaturer(temp_key)
+      @logger.info 'Start'
 
-      # manufacturer_links.keys.each do |link|
-      #   add_for_manufaturer(link)
-      # end
+      # temp_key = manufacturer_links.keys[7]
+      # add_for_manufaturer(temp_key)
+
+      manufacturer_links.keys.each do |link|
+        add_for_manufaturer(link)
+      end
 
       PSUS.values.each do |data|
         PowerSupply.create(data.to_h)
       end
     ensure
+      @logger.info 'End'
       @driver.quit
     end
   end
@@ -38,6 +45,8 @@ class ReprocessPsusJob < ApplicationJob
   private
 
   def manufacturer_links
+    @logger.info 'Getting manufacturer links'
+
     @manufacturer_links = {}
     @driver.navigate.to CYBENETICS_PSU_URL
     elements = @driver.find_elements(:css, '#myTable th a')
@@ -47,22 +56,43 @@ class ReprocessPsusJob < ApplicationJob
 
   def add_for_manufaturer(link)
     @driver.navigate.to link
+    @logger.info("_" * 50)
+    @logger.info "For brand: #{@manufacturer_links[link]}"
 
     ATX_MAP.each do |k, v|
+      @logger.info "Processing #{v}"
+
       add_all_for(link, k, v)
     end
   end
 
   def add_all_for(link, button_text, atx_version)
+    manufacturer = @manufacturer_links[link]
     sleep 2
     button = @driver.find_element(link_text: button_text)
     button.click
     sleep 2
+
+    nodisp = @driver.find_elements(:css, '.d-none')
+    nodisp.each do |nodisp|
+      @driver.execute_script("arguments[0].setAttribute('class', 'sm')", nodisp)
+    end
+
     trs = @driver.find_elements(:css, '#myTable tr')[3..-1]
     trs.each do |tr|
       data  = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
-      attrs = data + [@manufacturer_links[link], atx_version]
-      PSUS.update(attrs.first=>PSU.new(*attrs))
+      if viable?(data)
+        @logger.info "Got #{manufacturer} - #{data.first}"
+        attrs = data + [manufacturer, atx_version]
+        PSUS.update(attrs.first => PSU.new(*attrs))
+      end
     end
+  end
+
+  def viable?(data)
+    data.present? && !data[1].start_with?('SFX') &&
+      ['GOLD', 'PLATINUM', 'TITANIUM', 'DIAMOND'].include?(data[8]) &&
+      data[9].start_with?('A') && data[9] != 'A-' &&
+      data[2].to_i >= 1000
   end
 end
