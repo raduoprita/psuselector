@@ -4,7 +4,7 @@ class ReprocessPsusJob < ApplicationJob
   # TODO add logging
 
   CYBENETICS_PSU_URL = "https://www.cybenetics.com/index.php?option=power-supplies"
-  SKIPPED_BRANDS =
+  SKIPPED_BRANDS     =
     [
       '1ST PLAYER',
       'ABYSM GAMING',
