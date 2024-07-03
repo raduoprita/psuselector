@@ -1,8 +1,6 @@
 class ReprocessPsusJob < ApplicationJob
   queue_as :default
 
-  # TODO add logging
-
   CYBENETICS_PSU_URL = "https://www.cybenetics.com/index.php?option=power-supplies"
   SKIPPED_BRANDS     =
     [
