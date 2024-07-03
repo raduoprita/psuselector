@@ -61,6 +61,7 @@ class ReprocessPsusJob < ApplicationJob
   }
 
   def perform
+    start_time = Time.now
     @logger = Logger.new(STDOUT)
 
     PowerSupply.delete_all
@@ -85,6 +86,10 @@ class ReprocessPsusJob < ApplicationJob
       PSUS.values.each do |data|
         PowerSupply.create(data.to_h)
       end
+
+      end_time = Time.now
+      duration = end_time - start_time
+      @logger.info("Finished in #{duration} ms")
     ensure
       @logger.info 'End'
       @driver.quit
