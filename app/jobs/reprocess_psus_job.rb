@@ -115,11 +115,11 @@ class ReprocessPsusJob < ApplicationJob
 
     ATX_MAP.each do |k, v|
       @logger.info "Processing #{v}"
-      add_all_for(link, k, v)
+      add_all_for(k, v)
     end
   end
 
-  def add_all_for(link, button_text, atx_version)
+  def add_all_for(button_text, atx_version)
     sleep 2
     button = @driver.find_element(link_text: button_text)
     button.click
