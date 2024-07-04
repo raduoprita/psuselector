@@ -3,7 +3,12 @@ class PowerSuppliesController < ApplicationController
 
   # GET /power_supplies or /power_supplies.json
   def index
-    @power_supplies = PowerSupply.all
+    @order = 'avg_noise'
+    @manufacturers = PowerSupply
+                       .group(:manufacturer)
+                       .order(:manufacturer)
+                       .map(&:manufacturer)
+    @power_supplies = PowerSupply.order(@order)
   end
 
   # GET /power_supplies/1 or /power_supplies/1.json
@@ -38,7 +43,7 @@ class PowerSuppliesController < ApplicationController
   def update
     respond_to do |format|
       if @power_supply.update(power_supply_params)
-        format.html { redirect_to power_supply_url(@power_supply), notice: "Power supply was successfully updated." }
+        format.html { redirect_to power_supplies_url, notice: "Power supply was successfully updated." }
         format.json { render :show, status: :ok, location: @power_supply }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -69,6 +74,6 @@ class PowerSuppliesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def power_supply_params
-    params.require(:power_supply).permit(:manufacturer, :model, :atx_version, :form_factor, :wattage, :avg_efficiency, :avg_efficiency_5vsb, :vampire_power, :avg_pf, :avg_noise, :efficiency_rating, :noise_rating, :release_date)
+    params.require(:power_supply).permit(:manufacturer, :model, :atx_version, :form_factor, :wattage, :avg_efficiency, :avg_efficiency_5vsb, :vampire_power, :avg_pf, :avg_noise, :efficiency_rating, :noise_rating, :release_date, :price)
   end
 end

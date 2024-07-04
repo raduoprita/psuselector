@@ -64,8 +64,8 @@ class ReprocessPsusJob < ApplicationJob
     start_time = Time.now
     @logger = Logger.new(STDOUT)
 
-    PowerSupply.delete_all
     begin
+      PowerSupply.delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
       @driver = Selenium::WebDriver.for :chrome, options: @options
