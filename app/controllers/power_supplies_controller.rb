@@ -63,7 +63,7 @@ class PowerSuppliesController < ApplicationController
   end
 
   def reprocess
-    ReprocessPsusJob.perform_later
+    ReprocessPsusJob.perform_later(manufacturer: params[:manufacturer])
     redirect_to power_supplies_url
   end
 

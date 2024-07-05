@@ -60,12 +60,16 @@ class ReprocessPsusJob < ApplicationJob
     'ATX V3.1 230V' => 'ATX 3.1',
   }
 
-  def perform
+  def perform(args = {})
+    manufacturer = args[:manufacturer] || :all
     start_time = Time.now
     @logger = Logger.new(STDOUT)
+    sql_options = if manufacturer
+                    { manufacturer: manufacturer }
+                  end
 
     begin
-      PowerSupply.delete_all
+      PowerSupply.where(sql_options).delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
       @driver = Selenium::WebDriver.for :chrome, options: @options
@@ -78,8 +82,15 @@ class ReprocessPsusJob < ApplicationJob
       manufacturer_links.keys.each do |link|
         @manufacturer = @manufacturer_links[link]
 
-        unless not_wanted?(@manufacturer)
+        case manufacturer
+        when :all
+          unless not_wanted?
+            add_for_manufaturer(link)
+          end
+        when @manufacturer
           add_for_manufaturer(link)
+        else
+          @logger.info "Skipping manufacturer #{@manufacturer}"
         end
       end
 
@@ -148,7 +159,7 @@ class ReprocessPsusJob < ApplicationJob
       data[2].to_i >= 1000
   end
 
-  def not_wanted?(manufacturer)
-    SKIPPED_BRANDS.include?(manufacturer)
+  def not_wanted?
+    SKIPPED_BRANDS.include?(@manufacturer)
   end
 end
