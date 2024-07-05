@@ -1,147 +1,124 @@
-<div class="container left-0" style="display: flex; flex-direction: column">
+<div class="container" style="margin-left: 0.7rem; display: flex; flex-direction: column">
   <p style="color: green"><%= notice %></p>
   <div class="bg-gray-800">
-    <h1>Power supplies</h1>
+    <h1><%= link_to 'Power supplies', power_supplies_path %></h1>
   </div>
-  <div id="power_supplies">
-    <div>
-      <table class="w-full text-xs left-0 text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <th scope="row" class="text-xs px-6 py-4 text-gray-900 dark:text-white">
-<!--            <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">-->
-<!--              <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">-->
-<!--                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />-->
-<!--              </svg>-->
-<!--              Filter-->
-<!--              <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">-->
-<!--                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />-->
-<!--              </svg>-->
-<!--            </button>-->
-<!--            <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">-->
-<!--              <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">-->
-                <%# @manufacturers.each do |manufacturer| %>
-<!--                  <li class="flex items-center">-->
-<!--                    <input id="<%#= manufacturer %>" type="checkbox" value=""-->
-<!--                           class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />-->
-<!--                    <label for="<%#= manufacturer %>" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">-->
-                      <%#= manufacturer %>
-<!--                    </label>-->
-<!--                  </li>-->
-                <%# end %>
-<!--              </ul>-->
-<!--            </div>-->
-          </th>
-          <th>
-            <input type="text" class="text-xs flex">
-          </th>
-          <th></th>
-          <th>
-            <select aria-label="ATX" class="text-xs">
-              <option>
-                All
-              </option>
-              <option>
-                ATX
-              </option>
-              <option>
-                ATX 3.0
-              </option>
-              <option>
-                ATX 3.1
-              </option>
-            </select>
-          </th>
-          <th colspan="7"></th>
-          <th scope="col" class="px-6 py-3">
-            <select aria-label="Efficiency" class="text-xs">
-              <option>
-                All
-              </option>
-              <option>
-                GOLD
-              </option>
-              <option>
-                PLATINUM
-              </option>
-              <option>
-                TITANIUM
-              </option>
-              <option>
-                DIAMOND
-              </option>
-            </select>
-          </th>
-          <th colspan="4">
-          </th>
-        </tr>
-        <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            Brand
-          </th>
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            Model
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Price
-          </th>
-          <th scope="col" class="px-6 py-3">
-            ATX
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Form factor
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Wattage
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Avg efficiency
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Avg efficiency 5vsb
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Vampire power
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Avg pf
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Avg noise
-          </th>
-          <th scope="col" class="px-6 py-1">
-            Efficiency <br />rating
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Noise rating
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Release date
-          </th>
-          <th scope="col" class="px-6 py-3">
-            E
-          </th>
-          <th scope="col" class="px-6 py-3">
-            D
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @power_supplies.each do |power_supply| %>
-          <%= render partial: "psu_table", object: power_supply, as: :power_supply %>
-        <% end %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="px-6 py-4">
-            Total
-          </td>
-          <td colspan="15" class="px-6 py-4">
-            <%= PowerSupply.count %> PSUS
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <%= turbo_frame_tag "power_supplies" do %>
+
+    <div id="power_supplies">
+      <div>
+        <table class="w-full text-xs left-0 text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th scope="row" class="text-xs px-6 py-4 text-gray-900 dark:text-white">
+              <!--            <button id="filterDropdownButton" data-dropdown-toggle="filterDropdown" class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg md:w-auto focus:outline-none hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" type="button">-->
+              <!--              <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-4 h-4 mr-2 text-gray-400" viewbox="0 0 20 20" fill="currentColor">-->
+              <!--                <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd" />-->
+              <!--              </svg>-->
+              <!--              Filter-->
+              <!--              <svg class="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">-->
+              <!--                <path clip-rule="evenodd" fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />-->
+              <!--              </svg>-->
+              <!--            </button>-->
+              <!--            <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">-->
+              <!--              <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">-->
+              <%# @manufacturers.each do |manufacturer| %>
+              <!--                  <li class="flex items-center">-->
+              <!--                    <input id="<%#= manufacturer %>" type="checkbox" value=""-->
+              <!--                           class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />-->
+              <!--                    <label for="<%#= manufacturer %>" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">-->
+              <%#= manufacturer %>
+              <!--                    </label>-->
+              <!--                  </li>-->
+              <%# end %>
+              <!--              </ul>-->
+              <!--            </div>-->
+            </th>
+            <th>
+              <input type="text" class="text-xs flex">
+            </th>
+            <th></th>
+            <th>
+              <select aria-label="ATX" class="text-xs">
+                <option>
+                  All
+                </option>
+                <option>
+                  ATX
+                </option>
+                <option>
+                  ATX 3.0
+                </option>
+                <option>
+                  ATX 3.1
+                </option>
+              </select>
+            </th>
+            <th colspan="7"></th>
+            <th scope="col" class="px-6 py-3">
+              <select aria-label="Efficiency" class="text-xs">
+                <option>
+                  All
+                </option>
+                <option>
+                  GOLD
+                </option>
+                <option>
+                  PLATINUM
+                </option>
+                <option>
+                  TITANIUM
+                </option>
+                <option>
+                  DIAMOND
+                </option>
+              </select>
+            </th>
+            <th colspan="4">
+            </th>
+          </tr>
+          <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              Brand
+            </th>
+            <%= sortable_table_header 'Model', :model, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Price', :price, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'ATX', :atx_version, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Form factor', :form_factor, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Wattage', :wattage, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Avg efficiency', :avg_efficiency, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Avg efficiency 5vsb', :avg_efficiency_5vsb, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Vampire power', :vampire_power, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Avg pf', :avg_pf, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Avg noise', :avg_noise, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Efficiency rating', :efficiency_rating, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Noise rating', :noise_rating, :power_supplies_path, class: 'px-6 py-3' %>
+            <%= sortable_table_header 'Release date', :release_date, :power_supplies_path, class: 'px-6 py-3' %>
+            <th scope="col" class="px-6 py-3">
+              E
+            </th>
+            <th scope="col" class="px-6 py-3">
+              D
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @power_supplies.each do |power_supply| %>
+            <%= render partial: "psu_table", object: power_supply, as: :power_supply %>
+          <% end %>
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="px-6 py-4">
+              Total
+            </td>
+            <td colspan="15" class="px-6 py-4">
+              <%= PowerSupply.count %> PSUS
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="flow-root">
     <%= link_to "New power supply", new_power_supply_path %>

@@ -3,12 +3,15 @@ class PowerSuppliesController < ApplicationController
 
   # GET /power_supplies or /power_supplies.json
   def index
-    @order = 'avg_noise'
-    @manufacturers = PowerSupply
-                       .group(:manufacturer)
-                       .order(:manufacturer)
-                       .map(&:manufacturer)
-    @power_supplies = PowerSupply.order(@order)
+    sort_column = params[:sort] || "avg_noise"
+    sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
+
+    # @manufacturers = PowerSupply
+    #                    .group(:manufacturer)
+    #                    .order(:manufacturer)
+    #                    .map(&:manufacturer)
+
+    @power_supplies = PowerSupply.order("#{sort_column} #{sort_direction}")
   end
 
   # GET /power_supplies/1 or /power_supplies/1.json
