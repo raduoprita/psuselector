@@ -30,12 +30,14 @@ class ReprocessPsusJob < ApplicationJob
       'MAXPOWER',
       'MICRONICS',
       'MISTEL',
+      'MONTECH',
       'MSI',
       'PC POWER & COOLING',
       'PCCOOLER',
       'PCYES',
       'PICHAU GAMING',
       'POWERSPEC',
+      'RAIJINTEK',
       'RIOTORO',
       'ROSEWILL',
       'SALCOMP',
@@ -64,7 +66,9 @@ class ReprocessPsusJob < ApplicationJob
     manufacturer = args[:manufacturer] || :all
     start_time = Time.now
     @logger = Logger.new(STDOUT)
-    sql_options = if manufacturer
+    sql_options = if manufacturer == :all
+                    {}
+                  else
                     { manufacturer: manufacturer }
                   end
 
@@ -85,10 +89,10 @@ class ReprocessPsusJob < ApplicationJob
         case manufacturer
         when :all
           unless not_wanted?
-            add_for_manufaturer(link)
+            add_for_manufacturer(link)
           end
         when @manufacturer
-          add_for_manufaturer(link)
+          add_for_manufacturer(link)
         else
           @logger.info "Skipping manufacturer #{@manufacturer}"
         end
@@ -119,7 +123,7 @@ class ReprocessPsusJob < ApplicationJob
     @manufacturer_links.except!(@manufacturer_links.keys.last)
   end
 
-  def add_for_manufaturer(link)
+  def add_for_manufacturer(link)
     @driver.navigate.to link
     @logger.info("_" * 50)
     @logger.info "For brand: #{@manufacturer_links[link]}"
@@ -156,7 +160,7 @@ class ReprocessPsusJob < ApplicationJob
     data.present? && !data[1].start_with?('SFX') &&
       ['GOLD', 'PLATINUM', 'TITANIUM', 'DIAMOND'].include?(data[8]) &&
       data[9].start_with?('A') && data[9] != 'A-' &&
-      data[2].to_i >= 1000
+      data[2].to_i.between?(1000,1500)
   end
 
   def not_wanted?

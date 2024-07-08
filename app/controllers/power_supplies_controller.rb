@@ -3,13 +3,10 @@ class PowerSuppliesController < ApplicationController
 
   # GET /power_supplies or /power_supplies.json
   def index
-    sort_column = params[:sort] || "avg_noise"
+    sort_column    = params[:sort] || "avg_noise"
     sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
 
-    # @manufacturers = PowerSupply
-    #                    .group(:manufacturer)
-    #                    .order(:manufacturer)
-    #                    .map(&:manufacturer)
+    filters             = params[:filters] || {}
 
     @power_supplies = PowerSupply.order("#{sort_column} #{sort_direction}")
   end
@@ -66,7 +63,9 @@ class PowerSuppliesController < ApplicationController
   end
 
   def reprocess
-    ReprocessPsusJob.perform_later(manufacturer: params[:manufacturer])
+    options = {}
+    options = { manufacturer: params[:manufacturer] } if params[:manufacturer]
+    ReprocessPsusJob.perform_later(*options)
     redirect_to power_supplies_url
   end
 

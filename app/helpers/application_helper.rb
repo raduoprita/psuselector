@@ -11,10 +11,18 @@ module ApplicationHelper
     query_params = request.query_parameters.merge(sort: column, direction: direction)
 
     path = send(path_method, query_params)
-    link_to(path, class: "flex", **) do
+    link_to(path, data: { turbo_action: "advance" }, class: "flex", **) do
       concat title
       concat sort_icon(column)
     end
+  end
+
+  def psu_select(form, column)
+    form.select(column,
+      options_for_select(@power_supplies.map(&column).uniq.sort),
+      { prompt: "All" },
+      { class: 'text-xs', data: { action: "change->psu#change" } }
+    )
   end
 
   private

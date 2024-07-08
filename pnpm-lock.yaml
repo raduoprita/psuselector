@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@rails/request.js':
+        specifier: ^0.0.9
+        version: 0.0.9
+
+packages:
+
+  '@rails/request.js@0.0.9':
+    resolution: {integrity: sha512-VleYUyrA3rwKMvYnz7MI9Ada85Vekjb/WVz7NuGgDO24Y3Zy9FFSpDMQW+ea/tlftD+CdX/W/sUosRA9/HkDOQ==}
+
+snapshots:
+
+  '@rails/request.js@0.0.9': {}

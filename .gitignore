@@ -39,3 +39,8 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Dependency directory
+**/node_modules/**
+_node_modules
+.pnp.cjs
