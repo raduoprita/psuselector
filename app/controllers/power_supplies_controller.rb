@@ -65,7 +65,7 @@ class PowerSuppliesController < ApplicationController
   def reprocess
     options = {}
     options = { manufacturer: params[:manufacturer] } if params[:manufacturer]
-    ReprocessPsusJob.perform_later(*options)
+    ReprocessPsusJob.perform_later(options)
     redirect_to power_supplies_url
   end
 

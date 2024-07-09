@@ -141,8 +141,8 @@ class ReprocessPsusJob < ApplicationJob
     sleep 2
 
     nodisp = @driver.find_elements(:css, '.d-none')
-    nodisp.each do |nodisp|
-      @driver.execute_script("arguments[0].setAttribute('class', 'sm')", nodisp)
+    nodisp.each do |element|
+      @driver.execute_script("arguments[0].setAttribute('class', 'sm')", element)
     end
 
     trs = @driver.find_elements(:css, '#myTable tr')[3..-1]
