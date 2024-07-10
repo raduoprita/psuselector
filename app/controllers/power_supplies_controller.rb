@@ -2,13 +2,25 @@ class PowerSuppliesController < ApplicationController
   before_action :set_power_supply, only: %i[ show edit update destroy ]
 
   # GET /power_supplies or /power_supplies.json
+
   def index
     sort_column    = params[:sort] || "avg_noise"
     sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
 
-    filters             = params[:filters] || {}
+    @dropdown_filters = params[:filters] || {}
 
-    @power_supplies = PowerSupply.order("#{sort_column} #{sort_direction}")
+    psus = PowerSupply.all
+    @dropdowns = {}
+
+    [:manufacturer, :atx_version, :efficiency_rating].each do |column|
+      @dropdowns[column] = psus.map(&column).uniq.sort
+    end
+
+    @dropdown_filters.each do |column, filter|
+      psus = psus.where(column => filter) if valid_filter? filter
+    end
+
+    @power_supplies = psus.order("#{sort_column} #{sort_direction}")
   end
 
   # GET /power_supplies/1 or /power_supplies/1.json
@@ -77,5 +89,11 @@ class PowerSuppliesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def power_supply_params
     params.require(:power_supply).permit(:manufacturer, :model, :atx_version, :form_factor, :wattage, :avg_efficiency, :avg_efficiency_5vsb, :vampire_power, :avg_pf, :avg_noise, :efficiency_rating, :noise_rating, :release_date, :price)
+  end
+
+  private
+
+  def valid_filter?(filter)
+    ![nil, '', 'All'].include?(filter)
   end
 end

@@ -4,8 +4,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   change(event) {
     // console.log(event.target.value);
+
     document.getElementById("psu_form").submit()
-    // event.form().submit()
 
     // get(`/power_supplies?manufacturer=${event.target.value}`, {
     //   responseKind: "turbo-stream"
