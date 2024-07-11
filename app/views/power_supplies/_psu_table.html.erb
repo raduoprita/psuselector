@@ -3,14 +3,19 @@
     <%=
       link_to power_supply.manufacturer,
         reprocess_power_supplies_path(manufacturer: power_supply.manufacturer),
-        data: { turbo: false }
+        data: {
+          turbo:         true,
+          turbo_frame:   '_top',
+          turbo_method:  :get,
+          turbo_confirm: "Reprocess #{power_supply.manufacturer}?"
+        }
     %>
   </th>
   <td>
     <%= power_supply.model %>
   </td>
-  <td>
-    <%= power_supply.price %>
+  <td class="text-center">
+    <%= power_supply.p_price %> €
   </td>
   <td>
     <%= power_supply.atx_version %>

@@ -9,10 +9,10 @@ class PowerSuppliesController < ApplicationController
 
     @dropdown_filters = params[:filters] || {}
 
-    psus = PowerSupply.all
+    psus = PowerSupply.includes(:psu_price).all
     @dropdowns = {}
 
-    [:manufacturer, :atx_version, :efficiency_rating].each do |column|
+    [:manufacturer, :atx_version, :wattage, :efficiency_rating].each do |column|
       @dropdowns[column] = psus.map(&column).uniq.sort
     end
 

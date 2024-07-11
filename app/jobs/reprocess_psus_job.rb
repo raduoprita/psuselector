@@ -80,9 +80,6 @@ class ReprocessPsusJob < ApplicationJob
 
       @logger.info 'Start'
 
-      # temp_key = manufacturer_links.keys[7]
-      # add_for_manufaturer(temp_key)
-
       manufacturer_links.keys.each do |link|
         @manufacturer = @manufacturer_links[link]
 
@@ -101,6 +98,8 @@ class ReprocessPsusJob < ApplicationJob
       PSUS.values.each do |data|
         PowerSupply.create(data.to_h)
       end
+
+      PowerSupply.rebuild_prices
 
       end_time = Time.now
       duration = end_time - start_time

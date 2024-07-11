@@ -29,13 +29,13 @@ module ApplicationHelper
   def edit_button_to(path_or_object)
     button_to "Edit", path_or_object,
       method: :get, data: { turbo_frame: "_top" },
-      class:  'text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-full px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900'
+      class:  'text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-lg px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900'
   end
 
   def delete_button_to(path_or_object)
     button_to "Del", path_or_object,
       method: :delete, data: { turbo_confirm: "Are you sure?" },
-      class:  'text-xs text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-small rounded-full px-1 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
+      class:  'text-xs text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-small rounded-lg px-1 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
   end
 
   private
