@@ -45,12 +45,20 @@ class ReprocessPsusJob < ApplicationJob
       'SEGOTEP',
       'SHARKOON',
       'SUPERFRAME',
+      'THERMALTAKE',
       'VETROO',
       'WENTAI',
       'XPG',
       'ZALMAN',
-      'ZHONG YUAN POWER',
+      'ZHONG YUAN POWER'
     ]
+  ALWAYS_ADD_MODEL   = [
+    'C1500 Platinum'
+  ]
+  ALWAYS_SKIP_MODEL  = [
+    'RM1000x (Shift)',
+    'MWE Gold 1050W V2 ATX 3.1'
+  ]
 
   PSU     = Struct.new(
     *PowerSupply.column_names.map(&:to_sym) - [:id, :created_at, :updated_at]
@@ -64,13 +72,13 @@ class ReprocessPsusJob < ApplicationJob
 
   def perform(args = {})
     manufacturer = args[:manufacturer] || :all
-    start_time = Time.now
-    @logger = Logger.new(STDOUT)
-    sql_options = if manufacturer == :all
-                    {}
-                  else
-                    { manufacturer: manufacturer }
-                  end
+    start_time   = Time.now
+    @logger      = Logger.new(STDOUT)
+    sql_options  = if manufacturer == :all
+                     {}
+                   else
+                     { manufacturer: manufacturer }
+                   end
 
     begin
       PowerSupply.where(sql_options).delete_all
@@ -85,7 +93,7 @@ class ReprocessPsusJob < ApplicationJob
 
         case manufacturer
         when :all
-          unless not_wanted?
+          if viable_manufacturer?
             add_for_manufacturer(link)
           end
         when @manufacturer
@@ -147,7 +155,7 @@ class ReprocessPsusJob < ApplicationJob
     trs = @driver.find_elements(:css, '#myTable tr')[3..-1]
     trs.each do |tr|
       data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
-      if viable?(data)
+      if viable?(data) || always_add_model?(data)
         @logger.info "Got #{@manufacturer} - #{data.first}"
         attrs = data + [@manufacturer, atx_version]
         PSUS.update(attrs.first => PSU.new(*attrs))
@@ -158,11 +166,22 @@ class ReprocessPsusJob < ApplicationJob
   def viable?(data)
     data.present? && !data[1].start_with?('SFX') &&
       ['GOLD', 'PLATINUM', 'TITANIUM', 'DIAMOND'].include?(data[8]) &&
-      data[9].start_with?('A') && data[9] != 'A-' &&
-      data[2].to_i.between?(1000,1500)
+      data[2].to_i.between?(1000, 1500) &&
+      !skipped_expensive_models.include?(data[0]) &&
+      !ALWAYS_SKIP_MODEL.include?(data[0]) &&
+      data[9].start_with?('A') && data[9] != 'A-'
   end
 
-  def not_wanted?
-    SKIPPED_BRANDS.include?(@manufacturer)
+  def always_add_model?(data)
+    data.present? && ALWAYS_ADD_MODEL.include?(data[0])
+  end
+
+  def skipped_expensive_models
+    psu_prices = PsuPrice.where('price > 350')
+    @skipped_expensive_models ||= psu_prices.map(&:model)
+  end
+
+  def viable_manufacturer?
+    !SKIPPED_BRANDS.include?(@manufacturer)
   end
 end
