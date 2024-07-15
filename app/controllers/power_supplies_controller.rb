@@ -74,6 +74,11 @@ class PowerSuppliesController < ApplicationController
     end
   end
 
+  def set_favorite
+    @power_supply = PowerSupply.find(params[:power_supply_id])
+    @power_supply.favorite = params[:power_supply][:favorite]
+  end
+
   def reprocess
     options = {}
     options = { manufacturer: params[:manufacturer] } if params[:manufacturer]

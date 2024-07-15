@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :power_supplies do
     get :reprocess, on: :collection
+    patch :set_favorite
   end
   # get '/power_supplies/reprocess', to: 'power_supplies#reprocess'
 

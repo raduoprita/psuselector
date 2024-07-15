@@ -15,7 +15,7 @@
     <%= power_supply.model %>
   </td>
   <td class="text-center">
-    <%= power_supply.p_price %> €
+    <%= to_euro(power_supply.p_price) %>
   </td>
   <td>
     <%= power_supply.atx_version %>
@@ -49,6 +49,14 @@
   </td>
   <td>
     <%= power_supply.release_date %>
+  </td>
+  <td data-controller="toggler">
+    <%= form_for power_supply, url: power_supply_set_favorite_path(power_supply) do |form | %>
+      <%= form.label :favorite?, for: dom_id(power_supply) do %>
+        <%= form.check_box :favorite?, id: dom_id(power_supply),
+          data: { action: "toggler#submit" } %>
+      <% end %>
+    <% end %>
   </td>
   <td>
     <%= edit_button_to edit_power_supply_path(power_supply) %>

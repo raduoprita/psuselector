@@ -7,8 +7,20 @@
     <div>
       <table class="w-full text-xs left-0 text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <%= form_for("filters", id: "psu_form", method: "GET", action: "/power_supplies", class: "text-xs px-6 py-3") do |form| %>
+          <tr data-controller="psu" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th scope="row" class="text-xs px-5 py-3"><%= psu_select(form, :manufacturer) %></th>
+            <th colspan="2"></th>
+            <th><%= psu_select(form, :atx_version) %></th>
+            <th></th>
+            <th><%= psu_select(form, :wattage) %></th>
+            <th colspan="5"></th>
+            <th><%= psu_select(form, :efficiency_rating) %></th>
+            <th colspan="5"></th>
+          </tr>
+        <% end %>
         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <%= sortable_table_header 'Brand', :manufacturer, :power_supplies_path, scope: :row, class: 'px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white' %>
+          <%= sortable_table_header 'Brand', :manufacturer, :power_supplies_path, class: 'px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white' %>
           <%= sortable_table_header 'Model', :model, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Price', :price, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'ATX', :atx_version, :power_supplies_path, class: 'px-6 py-3' %>
@@ -22,24 +34,15 @@
           <%= sortable_table_header 'Efficiency rating', :efficiency_rating, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Noise rating', :noise_rating, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Release date', :release_date, :power_supplies_path, class: 'px-6 py-3' %>
-          <th scope="col" class="px-6 py-3">
-            E
+          <th class="px-1 py-1">
+            Fav
           </th>
-          <th scope="col" class="px-6 py-3">
-            D
+          <th class="px-1 py-1">
+            Edit
           </th>
-        </tr>
-        <tr data-controller="psu" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <%= form_for("filters", id: "psu_form", method: "GET", action: "/power_supplies", class: "text-xs px-6 py-3") do |form| %>
-            <th scope="row" class="text-xs px-5"><%= psu_select(form, :manufacturer) %></th>
-            <th colspan="2"></th>
-            <th><%= psu_select(form, :atx_version) %></th>
-            <th></th>
-            <th><%= psu_select(form, :wattage) %></th>
-            <th colspan="5"></th>
-            <th><%= psu_select(form, :efficiency_rating) %></th>
-            <th colspan="4"></th>
-          <% end %>
+          <th class="px-1 py-1">
+            Del
+          </th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +53,7 @@
           <td class="px-6 py-4">
             Total
           </td>
-          <td colspan="15" class="px-6 py-4">
+          <td colspan="16" class="px-6 py-4">
             <%= @power_supplies.count %> PSUS
           </td>
         </tr>

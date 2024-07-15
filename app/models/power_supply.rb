@@ -20,6 +20,13 @@ class PowerSupply < ApplicationRecord
     psu_price&.price
   end
 
+  def favorite?
+    psu_price&.favorite
+  end
+
+  def favorite=(value)
+    psu_price&.update(favorite: value)
+  end
 
   private
 
