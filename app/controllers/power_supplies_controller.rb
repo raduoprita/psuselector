@@ -9,7 +9,7 @@ class PowerSuppliesController < ApplicationController
 
     @dropdown_filters = params[:filters] || {}
 
-    psus = PowerSupply.includes(:psu_price).all
+    psus       = PowerSupply.includes(:psu_price).all
     @dropdowns = {}
 
     [:manufacturer, :atx_version, :wattage, :efficiency_rating].each do |column|
@@ -75,7 +75,7 @@ class PowerSuppliesController < ApplicationController
   end
 
   def set_favorite
-    @power_supply = PowerSupply.find(params[:power_supply_id])
+    @power_supply          = PowerSupply.find(params[:power_supply_id])
     @power_supply.favorite = params[:power_supply][:favorite]
   end
 
@@ -84,6 +84,17 @@ class PowerSuppliesController < ApplicationController
     options = { manufacturer: params[:manufacturer] } if params[:manufacturer]
     ReprocessPsusJob.perform_later(options)
     redirect_to power_supplies_url
+  end
+
+  def delete_common
+    ids  = PowerSupply.includes(:psu_price).all.select { |psu| psu.favorite? != true }.map(&:id)
+    psus = PowerSupply.where(id: ids)
+    psus.delete_all
+
+    respond_to do |format|
+      format.html { redirect_to power_supplies_url, notice: "Common power supplies were successfully destroyed." }
+      format.json { head :no_content }
+    end
   end
 
   # Use callbacks to share common setup or constraints between actions.

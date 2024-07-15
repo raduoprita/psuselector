@@ -63,14 +63,8 @@
   <% end %>
 
   <div class="flow-root">
-    <%= link_to "New power supply", new_power_supply_path %>
-    <%= link_to "Reprocess PSUs", reprocess_power_supplies_path,
-      data: {
-        turbo:         true,
-        turbo_frame:   '_top',
-        turbo_method:  :get,
-        turbo_confirm: "Are you sure you want to reprocess PSUs?"
-      }
-    %>
+    <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
+    <%= edit_button_to reprocess_power_supplies_path, name: 'Reprocess PSUs', confirm: "Are you sure you want to reprocess PSUs?" %>
+    <%= delete_button_to delete_common_power_supplies_path, name: 'Delete common PSUs' %>
   </div>
 </div>
