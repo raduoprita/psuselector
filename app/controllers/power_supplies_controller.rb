@@ -83,7 +83,11 @@ class PowerSuppliesController < ApplicationController
     options = {}
     options = { manufacturer: params[:manufacturer] } if params[:manufacturer]
     ReprocessPsusJob.perform_later(options)
-    redirect_to power_supplies_url
+
+    respond_to do |format|
+      format.html { redirect_to power_supplies_url, notice: "Reprocessing power supplies..." }
+      format.json { head :no_content }
+    end
   end
 
   def delete_common
