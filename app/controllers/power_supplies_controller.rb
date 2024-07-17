@@ -9,7 +9,7 @@ class PowerSuppliesController < ApplicationController
 
     @dropdown_filters = params[:filters] || {}
 
-    psus       = PowerSupply.includes(:psu_price).all
+    psus       = PowerSupply.includes(:psu_metadata).all
     @dropdowns = {}
 
     [:manufacturer, :atx_version, :wattage, :efficiency_rating].each do |column|
@@ -91,7 +91,7 @@ class PowerSuppliesController < ApplicationController
   end
 
   def delete_common
-    ids  = PowerSupply.includes(:psu_price).all.select { |psu| psu.favorite? != true }.map(&:id)
+    ids  = PowerSupply.includes(:psu_metadata).all.select { |psu| psu.favorite? != true }.map(&:id)
     psus = PowerSupply.where(id: ids)
     psus.delete_all
 

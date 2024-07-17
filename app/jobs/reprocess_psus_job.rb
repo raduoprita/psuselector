@@ -177,8 +177,8 @@ class ReprocessPsusJob < ApplicationJob
   end
 
   def skipped_expensive_models
-    psu_prices = PsuPrice.where('price > 350')
-    @skipped_expensive_models ||= psu_prices.map(&:model)
+    metadata_records = PsuMetadata.where('price > 350')
+    @skipped_expensive_models ||= metadata_records.map(&:model)
   end
 
   def viable_manufacturer?

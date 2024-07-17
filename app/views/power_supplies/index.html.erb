@@ -1,7 +1,7 @@
 <div class="container" style="margin-left: 0.7rem; display: flex; flex-direction: column">
   <p style="color: green"><%= notice %></p>
   <div class="zzzbg-gray-800">
-    <h1><%= link_to 'Power supplies', power_supplies_path %></h1>
+    <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
   </div>
   <%= turbo_frame_tag "power_supplies" do %>
     <div>
@@ -62,9 +62,12 @@
     </div>
   <% end %>
 
-  <div class="flow-root">
+<!--  <div class="flow-root">-->
+  <div class="flex">
     <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
+    <span class="ml-1"></span>
     <%= edit_button_to reprocess_power_supplies_path, name: 'Reprocess PSUs', confirm: "Are you sure you want to reprocess PSUs?" %>
+    <span class="ml-1"></span>
     <%= delete_button_to delete_common_power_supplies_path, name: 'Delete common PSUs' %>
   </div>
 </div>

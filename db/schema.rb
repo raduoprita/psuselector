@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_14_210920) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_16_075209) do
   create_table "power_supplies", force: :cascade do |t|
     t.string "model"
     t.string "form_factor"
@@ -30,7 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_14_210920) do
     t.integer "price"
   end
 
-  create_table "psu_prices", force: :cascade do |t|
+  create_table "psu_metadata", force: :cascade do |t|
     t.string "model"
     t.integer "price"
     t.datetime "created_at", null: false

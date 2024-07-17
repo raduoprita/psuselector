@@ -1,8 +1,8 @@
 class PowerSupply < ApplicationRecord
-  has_one :psu_price, primary_key: :model, foreign_key: :model
+  has_one :psu_metadata, primary_key: :model, foreign_key: :model
 
-  after_create :find_or_create_psu_price
-  after_save :update_psu_price
+  after_create :find_or_create_metadata
+  after_save :update_metadata
 
   validates :model, presence: true, uniqueness: true
   validates :manufacturer, presence: true
@@ -12,29 +12,29 @@ class PowerSupply < ApplicationRecord
 
   def self.rebuild_prices
     PowerSupply.all.each do |ps|
-      ps.update(price: ps.p_price)
+      ps.update(price: ps.metadata_price)
     end
   end
 
-  def p_price
-    psu_price&.price
+  def metadata_price
+    psu_metadata&.price
   end
 
   def favorite?
-    psu_price&.favorite
+    psu_metadata&.favorite
   end
 
   def favorite=(value)
-    psu_price&.update(favorite: value)
+    psu_metadata&.update(favorite: value)
   end
 
   private
 
-  def find_or_create_psu_price
-    PsuPrice.find_or_create_by(model: model)
+  def find_or_create_metadata
+    PsuMetadata.find_or_create_by(model: model)
   end
 
-  def update_psu_price
-    self.reload.psu_price.update(price: price) if price
+  def update_metadata
+    self.reload.psu_metadata.update(price: price) if price
   end
 end
