@@ -10,12 +10,6 @@ class PowerSupply < ApplicationRecord
   validates :wattage, presence: true, numericality: true
   validates :efficiency_rating, presence: true
 
-  def self.rebuild_prices
-    PowerSupply.all.each do |ps|
-      ps.update(price: ps.metadata_price)
-    end
-  end
-
   def metadata_price
     psu_metadata&.price
   end
@@ -32,6 +26,7 @@ class PowerSupply < ApplicationRecord
 
   def find_or_create_metadata
     PsuMetadata.find_or_create_by(model: model)
+    self.update(price: metadata_price)
   end
 
   def update_metadata

@@ -4,7 +4,8 @@ Rails.application.routes.draw do
     delete :delete_common, on: :collection
     patch :set_favorite
   end
-  # get '/power_supplies/reprocess', to: 'power_supplies#reprocess'
+
+  mount ActionCable.server => "/cable"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

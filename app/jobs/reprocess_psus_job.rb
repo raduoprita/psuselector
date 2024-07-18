@@ -107,11 +107,11 @@ class ReprocessPsusJob < ApplicationJob
         PowerSupply.create(data.to_h)
       end
 
-      PowerSupply.rebuild_prices
-
       end_time = Time.now
       duration = end_time - start_time
       @logger.info("Finished in #{duration} ms")
+
+      async_redirect
     ensure
       @logger.info 'End'
       @driver.quit
@@ -119,6 +119,16 @@ class ReprocessPsusJob < ApplicationJob
   end
 
   private
+
+  def async_redirect
+    ActionCable.server.broadcast(
+      'all',
+      {
+        head: 302,
+        path: Rails.application.routes.url_helpers.power_supplies_path
+      }
+    )
+  end
 
   def manufacturer_links
     @logger.info 'Getting manufacturer links'
