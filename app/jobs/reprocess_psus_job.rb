@@ -72,6 +72,7 @@ class ReprocessPsusJob < ApplicationJob
 
   def perform(args = {})
     @allow_a_minus = args[:allow_a_minus]
+    @all_brands    = args[:all_brands]
 
     manufacturer = args[:manufacturer] || :all
     start_time   = Time.now
@@ -202,6 +203,6 @@ class ReprocessPsusJob < ApplicationJob
   end
 
   def viable_manufacturer?
-    !SKIPPED_BRANDS.include?(@manufacturer)
+    @all_brands || !SKIPPED_BRANDS.include?(@manufacturer)
   end
 end
