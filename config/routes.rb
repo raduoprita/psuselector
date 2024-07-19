@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :power_supplies do
-    get :reprocess, on: :collection
+    put :reprocess, on: :collection
     delete :delete_common, on: :collection
     patch :set_favorite
   end

@@ -19,6 +19,7 @@ module ApplicationHelper
 
   def edit_button_to(path_or_object, **kwargs)
     name = kwargs[:name] || 'Edit'
+    method = kwargs[:method] || :get
 
     data = { turbo_frame: "_top" }
     if kwargs[:confirm].present?
@@ -26,7 +27,7 @@ module ApplicationHelper
     end
 
     button_to name, path_or_object,
-      method: :get, data: data,
+      method: method, data: data,
       class:  'text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-lg px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900'
   end
 

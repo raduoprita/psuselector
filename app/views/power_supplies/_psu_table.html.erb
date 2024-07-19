@@ -1,12 +1,13 @@
 <tr id="<%= dom_id power_supply %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
     <%=
-      link_to power_supply.manufacturer,
+      button_to power_supply.manufacturer,
         reprocess_power_supplies_path(manufacturer: power_supply.manufacturer),
+        method: :put,
         data: {
           turbo:         true,
           turbo_frame:   '_top',
-          turbo_method:  :get,
+          turbo_method:  :put,
           turbo_confirm: "Reprocess #{power_supply.manufacturer}?"
         }
     %>

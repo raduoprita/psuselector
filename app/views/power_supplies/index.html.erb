@@ -1,6 +1,6 @@
 <div class="container" style="margin-left: 0.7rem; display: flex; flex-direction: column">
   <p style="color: green"><%= notice %></p>
-  <div class="zzzbg-gray-800">
+  <div class="mb-1">
     <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
   </div>
   <%= turbo_frame_tag "power_supplies" do %>
@@ -65,9 +65,19 @@
 <!--  <div class="flow-root">-->
   <div class="flex">
     <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
-    <span class="ml-1"></span>
-    <%= edit_button_to reprocess_power_supplies_path, name: 'Reprocess PSUs', confirm: "Are you sure you want to reprocess PSUs?" %>
-    <span class="ml-1"></span>
-    <%= delete_button_to delete_common_power_supplies_path, name: 'Delete common PSUs' %>
+    <span class="ml-1 mt-0.5">
+      <%= form_tag reprocess_power_supplies_path, method: :put do %>
+        <div class="flex inline text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-lg px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
+          <%= label_tag :allow_a_minus, 'A-', class: 'px-1' %>
+          <%= check_box_tag :allow_a_minus %>
+          <div class="px-1">
+            <%= submit_tag 'Reprocess PSUs' %>
+          </div>
+        </div>
+      <% end %>
+    </span>
+    <span class="ml-1">
+      <%= delete_button_to delete_common_power_supplies_path, name: 'Delete common PSUs' %>
+    </span>
   </div>
 </div>

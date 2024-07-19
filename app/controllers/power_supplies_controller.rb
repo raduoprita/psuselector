@@ -81,7 +81,8 @@ class PowerSuppliesController < ApplicationController
 
   def reprocess
     options = {}
-    options = { manufacturer: params[:manufacturer] } if params[:manufacturer]
+    options.merge!({ manufacturer: params[:manufacturer] }) if params[:manufacturer]
+    options.merge!({ allow_a_minus: params[:allow_a_minus] }) if params[:allow_a_minus]
     ReprocessPsusJob.perform_later(options)
 
     respond_to do |format|

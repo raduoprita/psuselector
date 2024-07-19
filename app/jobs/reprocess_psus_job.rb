@@ -71,6 +71,8 @@ class ReprocessPsusJob < ApplicationJob
   }
 
   def perform(args = {})
+    @allow_a_minus = args[:allow_a_minus]
+
     manufacturer = args[:manufacturer] || :all
     start_time   = Time.now
     @logger      = Logger.new(STDOUT)
@@ -179,7 +181,15 @@ class ReprocessPsusJob < ApplicationJob
       data[2].to_i.between?(1000, 1500) &&
       !skipped_expensive_models.include?(data[0]) &&
       !ALWAYS_SKIP_MODEL.include?(data[0]) &&
-      data[9].start_with?('A') && data[9] != 'A-'
+      data[9].start_with?('A') && a_minus_filter(data)
+  end
+
+  def a_minus_filter(data)
+    if @allow_a_minus
+      true
+    else
+      data[9] != 'A-'
+    end
   end
 
   def always_add_model?(data)
@@ -187,7 +197,7 @@ class ReprocessPsusJob < ApplicationJob
   end
 
   def skipped_expensive_models
-    metadata_records = PsuMetadata.where('price > 350')
+    metadata_records          = PsuMetadata.where('price > 350')
     @skipped_expensive_models ||= metadata_records.map(&:model)
   end
 
