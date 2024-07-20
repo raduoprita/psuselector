@@ -69,8 +69,10 @@
       <%= form_tag reprocess_power_supplies_path, method: :put do %>
         <div class="flex inline text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-lg px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900">
           <%= label_tag :allow_a_minus, 'A-', class: 'px-1' %>
+          <%#= hidden_field_tag :allow_a_minus, '0' %>
           <%= check_box_tag :allow_a_minus %>
           <%= label_tag :all_brands, 'All', class: 'px-1' %>
+          <%#= hidden_field_tag :all_brands, '0' %>
           <%= check_box_tag :all_brands %>
           <div class="px-1">
             <%= submit_tag 'Reprocess PSUs' %>

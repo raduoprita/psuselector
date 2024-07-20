@@ -80,7 +80,13 @@ class PowerSuppliesController < ApplicationController
   end
 
   def reprocess
-    ReprocessPsusJob.perform_later(params.permit(:manufacturer, :allow_a_minus, :all_brands))
+    options = {
+      manufacturer:  params[:manufacturer],
+      allow_a_minus: params[:allow_a_minus],
+      all_brands:    params[:all_brands]
+    }
+
+    ReprocessPsusJob.perform_later(options)
 
     respond_to do |format|
       format.html { redirect_to power_supplies_url, notice: "Reprocessing power supplies..." }

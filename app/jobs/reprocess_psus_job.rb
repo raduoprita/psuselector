@@ -16,11 +16,13 @@ class ReprocessPsusJob < ApplicationJob
       'CHIEFTEC',
       'CHIEFTRONIC',
       'COUGAR',
+      'DUEX',
       'FRACTAL DESIGN',
       'GALAX',
       'GAME G FACTOR',
       'GAMEMAX',
       'GIGABYTE',
+      'GREEN MEDEL',
       'HIGH POWER',
       'INWIN',
       'KBM! GAMING',
@@ -45,6 +47,7 @@ class ReprocessPsusJob < ApplicationJob
       'SEGOTEP',
       'SHARKOON',
       'SUPERFRAME',
+      'THERMALRIGHT',
       'THERMALTAKE',
       'VETROO',
       'WENTAI',
@@ -71,8 +74,8 @@ class ReprocessPsusJob < ApplicationJob
   }
 
   def perform(args = {})
-    @allow_a_minus = args[:allow_a_minus]
-    @all_brands    = args[:all_brands]
+    @allow_a_minus = args[:allow_a_minus].present?
+    @all_brands    = args[:all_brands].present?
 
     manufacturer = args[:manufacturer] || :all
     start_time   = Time.now
