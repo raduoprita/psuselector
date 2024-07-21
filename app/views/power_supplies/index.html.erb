@@ -4,21 +4,14 @@
     <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
   </div>
   <%= turbo_frame_tag "power_supplies" do %>
+    <%= form_tag(power_supplies_path, id: "psu_filters", method: :get) do %>
+      <%= hidden_field_tag :sort, @sort_column %>
+      <%= hidden_field_tag :direction, @sort_direction %>
+    <% end %>
     <div>
       <table class="w-full text-xs left-0 text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <%= form_for("filters", id: "psu_form", method: "GET", action: "/power_supplies", class: "text-xs px-6 py-3") do |form| %>
-          <tr data-controller="psu" class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <th scope="row" class="text-xs px-5 py-3"><%= psu_select(form, :manufacturer) %></th>
-            <th colspan="2"></th>
-            <th><%= psu_select(form, :atx_version) %></th>
-            <th></th>
-            <th><%= psu_select(form, :wattage) %></th>
-            <th colspan="5"></th>
-            <th><%= psu_select(form, :efficiency_rating) %></th>
-            <th colspan="5"></th>
-          </tr>
-        <% end %>
+        <%= psu_filter_headers %>
         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
           <%= sortable_table_header 'Brand', :manufacturer, :power_supplies_path, class: 'px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white' %>
           <%= sortable_table_header 'Model', :model, :power_supplies_path, class: 'px-6 py-3' %>
@@ -46,9 +39,7 @@
         </tr>
         </thead>
         <tbody>
-        <% @power_supplies.each do |power_supply| %>
-          <%= render partial: "psu_table", object: power_supply, as: :power_supply %>
-        <% end %>
+        <%= render partial: "psu_table" %>
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
           <td class="px-6 py-4">
             Total
@@ -62,7 +53,7 @@
     </div>
   <% end %>
 
-<!--  <div class="flow-root">-->
+  <!--  <div class="flow-root">-->
   <div class="flex mt-0.5 mb-1">
     <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
     <span class="ml-1 mt-0.5">

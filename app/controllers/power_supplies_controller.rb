@@ -4,8 +4,10 @@ class PowerSuppliesController < ApplicationController
   # GET /power_supplies or /power_supplies.json
 
   def index
-    sort_column    = params[:sort] || "avg_noise"
-    sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
+    # TODO add pagination
+
+    @sort_column    = params[:sort] || "avg_noise"
+    @sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
 
     @dropdown_filters = params[:filters] || {}
 
@@ -20,7 +22,7 @@ class PowerSuppliesController < ApplicationController
       psus = psus.where(column => filter) if valid_filter? filter
     end
 
-    @power_supplies = psus.order("#{sort_column} #{sort_direction}")
+    @power_supplies = psus.order("#{@sort_column} #{@sort_direction}")
   end
 
   # GET /power_supplies/1 or /power_supplies/1.json

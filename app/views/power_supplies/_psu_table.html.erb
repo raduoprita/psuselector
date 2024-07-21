@@ -1,68 +1,69 @@
-<tr id="<%= dom_id power_supply %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-    <%=
-      button_to power_supply.manufacturer,
-        reprocess_power_supplies_path(manufacturer: power_supply.manufacturer),
-        method: :put,
-        data: {
-          turbo:         true,
-          turbo_frame:   '_top',
-          turbo_method:  :put,
-          turbo_confirm: "Reprocess #{power_supply.manufacturer}?"
-        }
-    %>
-  </th>
-  <td>
-    <%= power_supply.model %>
-  </td>
-  <td class="text-center">
-    <%= to_euro(power_supply.metadata_price) %>
-  </td>
-  <td>
-    <%= power_supply.atx_version %>
-  </td>
-  <td>
-    <%= power_supply.form_factor %>
-  </td>
-  <td>
-    <%= power_supply.wattage %>
-  </td>
-  <td>
-    <%= power_supply.avg_efficiency %>
-  </td>
-  <td>
-    <%= power_supply.avg_efficiency_5vsb %>
-  </td>
-  <td>
-    <%= power_supply.vampire_power %>
-  </td>
-  <td>
-    <%= power_supply.avg_pf %>
-  </td>
-  <td>
-    <%= power_supply.avg_noise %>
-  </td>
-  <td>
-    <%= power_supply.efficiency_rating %>
-  </td>
-  <td>
-    <%= power_supply.noise_rating %>
-  </td>
-  <td>
-    <%= power_supply.release_date %>
-  </td>
-  <td data-controller="toggler">
-    <%= form_for power_supply, url: power_supply_set_favorite_path(power_supply) do |form | %>
-      <%= form.label :favorite?, for: dom_id(power_supply) do %>
-        <%= form.check_box :favorite?, id: dom_id(power_supply),
-          data: { action: "toggler#submit" } %>
+<% @power_supplies.each do |power_supply| %>
+  <tr id="<%= dom_id power_supply %>" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+      <%=
+        button_to power_supply.manufacturer,
+          reprocess_power_supplies_path(manufacturer: power_supply.manufacturer),
+          method: :put,
+          data:   {
+            turbo:         true,
+            turbo_frame:   '_top',
+            turbo_method:  :put,
+            turbo_confirm: "Reprocess #{power_supply.manufacturer}?"
+          }
+      %>
+    </th>
+    <td>
+      <%= power_supply.model %>
+    </td>
+    <td class="text-center">
+      <%= to_euro(power_supply.metadata_price) %>
+    </td>
+    <td>
+      <%= power_supply.atx_version %>
+    </td>
+    <td>
+      <%= power_supply.form_factor %>
+    </td>
+    <td>
+      <%= power_supply.wattage %>
+    </td>
+    <td>
+      <%= power_supply.avg_efficiency %>
+    </td>
+    <td>
+      <%= power_supply.avg_efficiency_5vsb %>
+    </td>
+    <td>
+      <%= power_supply.vampire_power %>
+    </td>
+    <td>
+      <%= power_supply.avg_pf %>
+    </td>
+    <td>
+      <%= power_supply.avg_noise %>
+    </td>
+    <td>
+      <%= power_supply.efficiency_rating %>
+    </td>
+    <td>
+      <%= power_supply.noise_rating %>
+    </td>
+    <td>
+      <%= power_supply.release_date %>
+    </td>
+    <td data-controller="form">
+      <%= form_for power_supply, url: power_supply_set_favorite_path(power_supply) do |form| %>
+        <%= form.label :favorite?, for: dom_id(power_supply) do %>
+          <%= form.check_box :favorite?, id: dom_id(power_supply), data: { action: "form#submit" } %>
+        <% end %>
       <% end %>
-    <% end %>
-  </td>
-  <td>
-    <%= edit_button_to edit_power_supply_path(power_supply) %>
-  </td>
-  <td class="px-1 py-1">
-    <%= delete_button_to power_supply %>
-  </td>
-</tr>
+    </td>
+    <td>
+      <%= edit_button_to edit_power_supply_path(power_supply) %>
+    </td>
+    <td class="px-1 py-1">
+      <%= delete_button_to power_supply %>
+    </td>
+  </tr>
+<% end %>
