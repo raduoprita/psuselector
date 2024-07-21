@@ -52,10 +52,10 @@
     <td>
       <%= power_supply.release_date %>
     </td>
-    <td data-controller="form">
+    <td data-controller="toggler">
       <%= form_for power_supply, url: power_supply_set_favorite_path(power_supply) do |form| %>
         <%= form.label :favorite?, for: dom_id(power_supply) do %>
-          <%= form.check_box :favorite?, id: dom_id(power_supply), data: { action: "form#submit" } %>
+          <%= form.check_box :favorite?, id: dom_id(power_supply), data: { action: "toggler#submit" } %>
         <% end %>
       <% end %>
     </td>
