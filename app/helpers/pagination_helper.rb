@@ -1,18 +1,29 @@
 module PaginationHelper
 
   def pagination_button(direction)
-    if direction == :prev
-      page = @page <= 2 ? 1 : @page - 1
+    is_last_page = @pag_count / (@limit * @page).to_f <= 1
+    case direction
+    when :first
+      page   = 1
+      hidden = @page == 1 ? :hidden : nil
+    when :prev
+      page   = @page <= 2 ? 1 : @page - 1
+      hidden = @page == 1 ? :hidden : nil
+    when :next
+      page      = is_last_page ? @page : @page + 1
+      hidden    = is_last_page ? :hidden : nil
+    when :last
+      page      = @pag_count / @limit + 1
+      hidden    = is_last_page ? :hidden : nil
     else
-      last_page = @pag_count / @limit <= 1
-      page      = last_page ? @page : @page + 1
+      raise 'Wrong attribute'
     end
 
-    button_to(
-      power_supplies_path,
+    link_to(
+      power_supplies_path(filter_params.merge(page: page)),
       method: :get,
-      params: { page: page },
-      class:  'flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
+      class:  "#{hidden} flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+      data:   { turbo_action: :advance }
     ) do
       svg_arrow_tag direction
     end
@@ -21,16 +32,25 @@ module PaginationHelper
   private
 
   def svg_arrow_tag(direction)
-    if direction == :prev
+    case direction
+    when :first
+      text   = 'First'
+      tag1   = text_tag(text)
+    when :prev
       text   = 'Prev'
       path_d = 'M13 5H1m0 0 4 4M1 5l4-4'
       tag1   = svg_tag(path_d)
       tag2   = text_tag(text)
-    else
+    when :next
       text   = 'Next'
       path_d = 'M1 5h12m0 0L9 1m4 4L9 9'
       tag1   = text_tag(text)
       tag2   = svg_tag(path_d)
+    when :last
+      text   = 'Last'
+      tag1   = text_tag(text)
+    else
+      raise 'Wrong attribute'
     end
 
     tag1 + tag2
@@ -60,5 +80,14 @@ module PaginationHelper
 
   def text_tag(text)
     content_tag(:span, text, class: 'pr-2')
+  end
+
+  def filter_params
+    params.permit(
+      :page,
+      :sort,
+      :direction,
+      filters: [:manufacturer, :atx_version, :wattage, :efficiency_rating]
+    )
   end
 end

@@ -8,7 +8,7 @@ module ApplicationHelper
   def sortable_column(title, column, path_method, **)
     direction = (column.to_s == params[:sort].to_s && params[:direction] == "asc") ? "desc" : "asc"
 
-    query_params = request.query_parameters.merge(sort: column, direction: direction)
+    query_params = request.query_parameters.merge(page: 1, sort: column, direction: direction)
 
     path = send(path_method, query_params)
     link_to(path, data: { turbo_action: "advance" }, class: "flex", **) do
