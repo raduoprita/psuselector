@@ -1,10 +1,21 @@
 class PowerSuppliesController < ApplicationController
+  RECORDS_PER_PAGE = 15
   before_action :set_power_supply, only: %i[ show edit update destroy ]
 
   # GET /power_supplies or /power_supplies.json
 
   def index
-    # TODO add pagination
+
+    # TODO update pagination to work with filters or use a gem
+
+    @page = (params[:page] || 1).to_i
+
+    @limit = RECORDS_PER_PAGE
+    offset = (@page - 1) * RECORDS_PER_PAGE
+
+    @pag_first = offset + 1
+    @pag_last = offset + RECORDS_PER_PAGE
+    @pag_count = PowerSupply.count
 
     @sort_column    = params[:sort] || "avg_noise"
     @sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
@@ -22,7 +33,9 @@ class PowerSuppliesController < ApplicationController
       psus = psus.where(column => filter) if valid_filter? filter
     end
 
-    @power_supplies = psus.order("#{@sort_column} #{@sort_direction}")
+    @power_supplies = psus.
+      order("#{@sort_column} #{@sort_direction}").
+      limit(@limit).offset(offset)
   end
 
   # GET /power_supplies/1 or /power_supplies/1.json

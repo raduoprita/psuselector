@@ -1,0 +1,15 @@
+<div id="pagination">
+  <div class="flex flex-col items-center">
+    <span class="text-sm text-gray-700 dark:text-gray-400">
+      Showing
+      <span class="font-semibold text-gray-900 dark:text-white"><%= @pag_first %></span> to
+      <span class="font-semibold text-gray-900 dark:text-white"><%= [@pag_last, @pag_count].min %></span> of
+      <span class="font-semibold text-gray-900 dark:text-white"><%= @pag_count %></span>
+      Entries
+  </span>
+    <div class="inline-flex mt-2 xs:mt-0">
+      <%= pagination_button :prev %>
+      <%= pagination_button :next %>
+    </div>
+  </div>
+</div>
