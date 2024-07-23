@@ -6,6 +6,7 @@ class PowerSuppliesController < ApplicationController
 
   def index
     # TODO maybe use a pagination gem?
+    # TODO add authentication
 
     @page = (params[:page] || 1).to_i
 
