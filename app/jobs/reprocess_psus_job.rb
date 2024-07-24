@@ -1,4 +1,8 @@
 class ReprocessPsusJob < ApplicationJob
+  UNWANTED_EFFICIENCIES = []
+  MINIMUM_WATTAGE       = 1200
+  MAXIMUM_WATTAGE       = 2000
+
   queue_as :default
 
   CYBENETICS_PSU_URL = "https://www.cybenetics.com/index.php?option=power-supplies"
@@ -24,11 +28,11 @@ class ReprocessPsusJob < ApplicationJob
       'GIGABYTE',
       'GREEN MEDEL',
       'HIGH POWER',
+      'HUSKY',
       'INWIN',
       'KBM! GAMING',
       'KINPOWER',
       'KOLINK',
-      'LIAN LI',
       'MAXPOWER',
       'MICRONICS',
       'MISTEL',
@@ -74,8 +78,9 @@ class ReprocessPsusJob < ApplicationJob
   }
 
   def perform(args = {})
-    @allow_a_minus = args[:allow_a_minus].present?
-    @all_brands    = args[:all_brands].present?
+    @allow_a_minus     = args[:allow_a_minus].present?
+    @all_brands        = args[:all_brands].present?
+    @all_noise_ratings = args[:all_noise_ratings].present?
 
     manufacturer = args[:manufacturer] || :all
     start_time   = Time.now
@@ -181,11 +186,11 @@ class ReprocessPsusJob < ApplicationJob
 
   def viable?(data)
     data.present? && !data[1].start_with?('SFX') &&
-      ['GOLD', 'PLATINUM', 'TITANIUM', 'DIAMOND'].include?(data[8]) &&
-      data[2].to_i.between?(1000, 1500) &&
+      !UNWANTED_EFFICIENCIES.include?(data[8]) &&
+      data[2].to_i.between?(MINIMUM_WATTAGE, MAXIMUM_WATTAGE) &&
       !skipped_expensive_models.include?(data[0]) &&
       !ALWAYS_SKIP_MODEL.include?(data[0]) &&
-      data[9].start_with?('A') && a_minus_filter(data)
+      noise_rating_filter(data) && a_minus_filter(data)
   end
 
   def a_minus_filter(data)
@@ -193,6 +198,14 @@ class ReprocessPsusJob < ApplicationJob
       true
     else
       data[9] != 'A-'
+    end
+  end
+
+  def noise_rating_filter(data)
+    if @all_noise_ratings
+      true
+    else
+      data[9].start_with?('A')
     end
   end
 

@@ -96,9 +96,10 @@ class PowerSuppliesController < ApplicationController
 
   def reprocess
     options = {
-      manufacturer:  params[:manufacturer],
-      allow_a_minus: params[:allow_a_minus],
-      all_brands:    params[:all_brands]
+      manufacturer:      params[:manufacturer],
+      allow_a_minus:     params[:allow_a_minus],
+      all_brands:        params[:all_brands],
+      all_noise_ratings: params[:all_noise_ratings],
     }
 
     ReprocessPsusJob.perform_later(options)
