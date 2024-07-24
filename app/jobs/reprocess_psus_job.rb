@@ -1,5 +1,5 @@
 class ReprocessPsusJob < ApplicationJob
-  UNWANTED_EFFICIENCIES = []
+  UNWANTED_EFFICIENCIES = ['SILVER']
   MINIMUM_WATTAGE       = 1200
   MAXIMUM_WATTAGE       = 2000
 
