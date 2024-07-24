@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_16_075209) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_24_175058) do
   create_table "power_supplies", force: :cascade do |t|
     t.string "model"
     t.string "form_factor"
@@ -36,6 +36,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_16_075209) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "favorite"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
 end

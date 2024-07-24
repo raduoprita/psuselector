@@ -1,7 +1,18 @@
 <div class="container" style="margin-left: 0.7rem; display: flex; flex-direction: column">
   <p style="color: green"><%= notice %></p>
-  <div class="mt-1 mb-1">
-    <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
+  <div class="inline flex mt-1 mb-1">
+    <div class="mr-2">
+      <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
+    </div>
+    <div class="mr-2">
+      <h1><%= edit_button_to user_session_path, name: 'Log in' %></h1>
+    </div>
+    <div class="mr-2">
+      <h1><%= delete_button_to destroy_user_session_path, name: 'Sign out', without_confirm: true %></h1>
+    </div>
+<!--    <div class="mr-2">-->
+<!--      <h1><%#= edit_button_to new_user_registration_path, name: 'Sign up' %></h1>-->
+<!--    </div>-->
   </div>
   <%= turbo_frame_tag "power_supplies" do %>
     <%= form_tag(power_supplies_path, id: "psu_filters", method: :get) do %>
@@ -27,15 +38,17 @@
           <%= sortable_table_header 'Efficiency rating', :efficiency_rating, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Noise rating', :noise_rating, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Release date', :release_date, :power_supplies_path, class: 'px-6 py-3' %>
-          <th class="px-1 py-1">
-            Fav
-          </th>
-          <th class="px-1 py-1">
-            Edit
-          </th>
-          <th class="px-1 py-1">
-            Del
-          </th>
+          <% if user_signed_in? %>
+            <th class="px-1 py-1">
+              Fav
+            </th>
+            <th class="px-1 py-1">
+              Edit
+            </th>
+            <th class="px-1 py-1">
+              Del
+            </th>
+          <% end %>
         </tr>
         </thead>
         <tbody>
@@ -57,9 +70,10 @@
     </div>
   <% end %>
 
-  <div class="flex mt-0.5 mb-1">
-    <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
-    <span class="ml-1 mt-0.5">
+  <% if user_signed_in? %>
+    <div class="flex mt-0.5 mb-1">
+      <%= edit_button_to new_power_supply_path, name: 'New power supply' %>
+      <span class="ml-1 mt-0.5">
       <%= form_tag reprocess_power_supplies_path, method: :put do %>
         <div class="px-1">
           <%= submit_tag 'Reprocess PSUs', class: 'flex inline text-xs text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-small rounded-lg px-1 py-1 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900' %>
@@ -78,8 +92,9 @@
         </div>
       <% end %>
     </span>
-    <span class="ml-1">
+      <span class="ml-1">
       <%= delete_button_to delete_common_power_supplies_path, name: 'Delete common PSUs' %>
     </span>
-  </div>
+    </div>
+  <% end %>
 </div>

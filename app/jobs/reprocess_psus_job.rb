@@ -148,6 +148,9 @@ class ReprocessPsusJob < ApplicationJob
     @driver.navigate.to CYBENETICS_PSU_URL
     elements = @driver.find_elements(:css, '#myTable th a')
     elements.each { |e| @manufacturer_links[e.attribute(:href)] = e.text }
+
+    @logger.info "found links: #{@manufacturer_links.each { |link| link}}"
+
     @manufacturer_links.except!(@manufacturer_links.keys.last)
   end
 
@@ -174,14 +177,18 @@ class ReprocessPsusJob < ApplicationJob
     end
 
     trs = @driver.find_elements(:css, '#myTable tr')[3..-1]
-    trs.each do |tr|
-      data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
-      if viable?(data) || always_add_model?(data)
-        @logger.info "Got #{@manufacturer} - #{data.first}"
-        attrs = data + [@manufacturer, atx_version]
-        PSUS.update(attrs.first => PSU.new(*attrs))
+    if trs
+      trs.each do |tr|
+        data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
+        if viable?(data) || always_add_model?(data)
+          @logger.info "Got #{@manufacturer} - #{data.first}"
+          attrs = data + [@manufacturer, atx_version]
+          PSUS.update(attrs.first => PSU.new(*attrs))
+        end
       end
     end
+  rescue
+    nil
   end
 
   def viable?(data)

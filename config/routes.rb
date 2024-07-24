@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :users
+
   resources :power_supplies do
     put :reprocess, on: :collection
     delete :delete_common, on: :collection

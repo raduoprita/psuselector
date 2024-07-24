@@ -32,10 +32,14 @@ module ApplicationHelper
   end
 
   def delete_button_to(path_or_object, **kwargs)
+    without_confirm = kwargs[:without_confirm]
     name = kwargs[:name] || 'Del'
-    button_to name, path_or_object,
-      method: :delete, data: { turbo_confirm: "Are you sure?" },
+    html_options = {
+      method: :delete,
       class:  'text-xs text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-small rounded-lg px-1 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
+    }
+    html_options.merge!(data: { turbo_confirm: "Are you sure?" }) unless without_confirm
+    button_to name, path_or_object, html_options
   end
 
   private
