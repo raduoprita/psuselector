@@ -149,7 +149,9 @@ class ReprocessPsusJob < ApplicationJob
     elements = @driver.find_elements(:css, '#myTable th a')
     elements.each { |e| @manufacturer_links[e.attribute(:href)] = e.text }
 
-    @logger.info "found links: #{@manufacturer_links.each { |link| link}}"
+    @manufacturer_links.each do |link|
+      @logger.info "found link: #{link}}"
+    end
 
     @manufacturer_links.except!(@manufacturer_links.keys.last)
   end

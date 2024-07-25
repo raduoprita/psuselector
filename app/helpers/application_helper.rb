@@ -18,12 +18,12 @@ module ApplicationHelper
   end
 
   def edit_button_to(path_or_object, **kwargs)
-    name = kwargs[:name] || 'Edit'
+    name   = kwargs[:name] || 'Edit'
     method = kwargs[:method] || :get
 
     data = { turbo_frame: "_top" }
     if kwargs[:confirm].present?
-      data.update(turbo_confirm: kwargs[:confirm] )
+      data.update(turbo_confirm: kwargs[:confirm])
     end
 
     button_to name, path_or_object,
@@ -33,8 +33,8 @@ module ApplicationHelper
 
   def delete_button_to(path_or_object, **kwargs)
     without_confirm = kwargs[:without_confirm]
-    name = kwargs[:name] || 'Del'
-    html_options = {
+    name            = kwargs[:name] || 'Del'
+    html_options    = {
       method: :delete,
       class:  'text-xs text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-small rounded-lg px-1 py-1 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'
     }
@@ -45,14 +45,17 @@ module ApplicationHelper
   private
 
   def sort_icon(column)
-    return
+    # return
     return unless params[:sort].to_s == column.to_s
 
-    if params[:direction] == "asc"
-      svg_icon("M5 15l7-7 7 7")
-    else
-      svg_icon("M19 9l-7 7-7-7")
-    end
+    svg = if params[:direction] == "asc"
+            svg_icon("M5 15l7-7 7 7")
+          else
+            svg_icon("M19 9l-7 7-7-7")
+          end
+
+    content_tag :div, svg, class: 'flex items-center'
+
   end
 
   def svg_icon(path_d)

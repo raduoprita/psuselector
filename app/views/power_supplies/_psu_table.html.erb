@@ -26,24 +26,24 @@
     <td>
       <%= power_supply.atx_version %>
     </td>
-    <td>
-      <%= power_supply.form_factor %>
-    </td>
+<!--    <td>-->
+      <%#= power_supply.form_factor %>
+<!--    </td>-->
     <td>
       <%= power_supply.wattage %>
     </td>
     <td>
       <%= power_supply.avg_efficiency %>
     </td>
-    <td>
-      <%= power_supply.avg_efficiency_5vsb %>
-    </td>
-    <td>
-      <%= power_supply.vampire_power %>
-    </td>
-    <td>
-      <%= power_supply.avg_pf %>
-    </td>
+<!--    <td>-->
+      <%#= power_supply.avg_efficiency_5vsb %>
+<!--    </td>-->
+<!--    <td>-->
+      <%#= power_supply.vampire_power %>
+<!--    </td>-->
+<!--    <td>-->
+      <%#= power_supply.avg_pf %>
+<!--    </td>-->
     <td>
       <%= power_supply.avg_noise %>
     </td>
@@ -53,12 +53,12 @@
     <td>
       <%= power_supply.noise_rating %>
     </td>
-    <td>
+    <td class="text-center">
       <%= power_supply.release_date %>
     </td>
 
     <% if user_signed_in? %>
-      <td data-controller="toggler">
+      <td data-controller="toggler" class="text-center">
         <%= form_for power_supply, url: power_supply_set_favorite_path(power_supply) do |form| %>
           <%= form.label :favorite?, for: dom_id(power_supply) do %>
             <%= form.check_box :favorite?, id: dom_id(power_supply), data: { action: "toggler#submit" } %>

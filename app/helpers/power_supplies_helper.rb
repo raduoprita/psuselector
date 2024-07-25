@@ -12,11 +12,10 @@ module PowerSuppliesHelper
         content_tag(:th) do
           psu_select(:atx_version)
         end +
-        content_tag(:th) +
         content_tag(:th) do
           psu_select(:wattage)
         end +
-        content_tag(:th, nil, colspan: 5) +
+        content_tag(:th, nil, colspan: 2) +
         content_tag(:th) do
           psu_select(:efficiency_rating)
         end +

@@ -1,5 +1,5 @@
 class PowerSuppliesController < ApplicationController
-  RECORDS_PER_PAGE = 15
+  RECORDS_PER_PAGE = 10
   before_action :set_power_supply, only: %i[ show edit update destroy ]
 
   # GET /power_supplies or /power_supplies.json

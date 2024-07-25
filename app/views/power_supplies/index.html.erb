@@ -4,12 +4,15 @@
     <div class="mr-2">
       <h1><%= edit_button_to power_supplies_path, name: 'Power supplies' %></h1>
     </div>
-    <div class="mr-2">
-      <h1><%= edit_button_to user_session_path, name: 'Log in' %></h1>
-    </div>
-    <div class="mr-2">
-      <h1><%= delete_button_to destroy_user_session_path, name: 'Sign out', without_confirm: true %></h1>
-    </div>
+    <% if user_signed_in? %>
+      <div class="mr-2">
+        <h1><%= delete_button_to destroy_user_session_path, name: 'Sign out', without_confirm: true %></h1>
+      </div>
+    <% else %>
+      <div class="mr-2">
+        <h1><%= edit_button_to user_session_path, name: 'Log in' %></h1>
+      </div>
+    <% end %>
 <!--    <div class="mr-2">-->
 <!--      <h1><%#= edit_button_to new_user_registration_path, name: 'Sign up' %></h1>-->
 <!--    </div>-->
@@ -25,21 +28,21 @@
         <%= psu_filter_headers %>
         <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
           <%= sortable_table_header 'Brand', :manufacturer, :power_supplies_path, class: 'px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white' %>
-          <%= sortable_table_header 'Model', :model, :power_supplies_path, class: 'px-6 py-3' %>
+          <%= sortable_table_header 'Model', :model, :power_supplies_path, class: 'min-w-52 px-6 py-3' %>
           <%= sortable_table_header 'Price', :price, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'ATX', :atx_version, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Form factor', :form_factor, :power_supplies_path, class: 'px-6 py-3' %>
+          <%#= sortable_table_header 'Form factor', :form_factor, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Wattage', :wattage, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Avg efficiency', :avg_efficiency, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Avg efficiency 5vsb', :avg_efficiency_5vsb, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Vampire power', :vampire_power, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Avg pf', :avg_pf, :power_supplies_path, class: 'px-6 py-3' %>
+          <%= sortable_table_header 'Avg efficiency', :avg_efficiency, :power_supplies_path, class: 'min-w-40 px-6 py-3' %>
+          <%#= sortable_table_header 'Avg efficiency 5vsb', :avg_efficiency_5vsb, :power_supplies_path, class: 'min-w-40 px-6 py-3' %>
+          <%#= sortable_table_header 'Vampire power', :vampire_power, :power_supplies_path, class: 'px-6 py-3' %>
+          <%#= sortable_table_header 'Avg pf', :avg_pf, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Avg noise', :avg_noise, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Efficiency rating', :efficiency_rating, :power_supplies_path, class: 'px-6 py-3' %>
           <%= sortable_table_header 'Noise rating', :noise_rating, :power_supplies_path, class: 'px-6 py-3' %>
-          <%= sortable_table_header 'Release date', :release_date, :power_supplies_path, class: 'px-6 py-3' %>
+          <%= sortable_table_header 'Release date', :release_date, :power_supplies_path, class: 'text-center px-6 py-3' %>
           <% if user_signed_in? %>
-            <th class="px-1 py-1">
+            <th class="text-center px-1 py-1">
               Fav
             </th>
             <th class="px-1 py-1">
@@ -57,13 +60,13 @@
           <td class="px-6 py-4">
             Total
           </td>
-          <td colspan="4" class="px-6 py-4">
+          <td colspan="3" class="px-6 py-4">
             <%= @power_supplies.count %> PSUS
           </td>
           <td colspan="4">
             <%= render partial: 'pagination' %>
           </td>
-          <td colspan="8"></td>
+          <td colspan="5"></td>
         </tr>
         </tbody>
       </table>
