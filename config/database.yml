@@ -4,46 +4,43 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem "sqlite3"
 #
-default: &default
-  adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-
-development:
-  <<: *default
-  database: storage/development.sqlite3
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: storage/test.sqlite3
-
-production:
-  <<: *default
-  database: storage/production.sqlite3
-
-
 #default: &default
-#  adapter: mysql2
-#  database: dbname
-#  username: psuselector
-#  password: 123456
+#  adapter: sqlite3
 #  pool: <%#= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 #  timeout: 5000
 
 #development:
 #  <<: *default
-#  database: psuselector_dev
+#  database: storage/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 #test:
 #  <<: *default
-#  database: psuselector_test
+#  database: storage/test.sqlite3
 
 #production:
 #  <<: *default
-#  database: psuselector_production
+#  database: storage/production.sqlite3
+
+
+default: &default
+  adapter: postgresql
+  database: dbname
+  username: psuselector
+  password: 123456
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+development:
+  <<: *default
+  database: psuselector_dev
+
+test:
+  <<: *default
+  database: psuselector_test
+
+production:
+  <<: *default
+  database: psuselector_production

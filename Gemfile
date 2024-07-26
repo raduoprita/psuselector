@@ -10,6 +10,7 @@ gem 'faraday', '~> 2.9', '>= 2.9.2'
 gem 'selenium-webdriver'
 gem 'tailwindcss-rails', '~> 2.6', '>= 2.6.1'
 # gem 'mysql2', '~> 0.5.6'
+gem 'pg', '~> 1.5', '>= 1.5.6'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
