@@ -3,6 +3,7 @@ class ReprocessPsusJob < ApplicationJob
   MINIMUM_WATTAGE       = 1200
   MAXIMUM_WATTAGE       = 2000
 
+  
   queue_as :default
 
   CYBENETICS_PSU_URL = "https://www.cybenetics.com/index.php?option=power-supplies"
