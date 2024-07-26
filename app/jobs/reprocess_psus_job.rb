@@ -92,10 +92,6 @@ class ReprocessPsusJob < ApplicationJob
                    end
 
     begin
-
-      # TODO ActionCable.server.broadcast each step
-
-
       PowerSupply.where(sql_options).delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
