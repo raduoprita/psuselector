@@ -93,7 +93,7 @@ class ReprocessPsusJob < ApplicationJob
 
     begin
       if Rails.env.production?
-        Selenium::WebDriver::Chrome.driver_path = '/app/.chrome-for-testing/chromedriver-linux64/chromedriver'
+        Selenium::WebDriver::Chrome.path = '/app/.chrome-for-testing/chromedriver-linux64/chromedriver'
       end
 
       PowerSupply.where(sql_options).delete_all
