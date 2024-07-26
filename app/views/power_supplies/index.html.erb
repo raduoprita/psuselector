@@ -13,9 +13,9 @@
         <h1><%= edit_button_to user_session_path, name: 'Log in' %></h1>
       </div>
     <% end %>
-    <div class="mr-2">
-      <h1><%= edit_button_to new_user_registration_path, name: 'Sign up' %></h1>
-    </div>
+<!--    <div class="mr-2">-->
+<!--      <h1><%#= edit_button_to new_user_registration_path, name: 'Sign up' %></h1>-->
+<!--    </div>-->
   </div>
   <%= turbo_frame_tag "power_supplies" do %>
     <%= form_tag(power_supplies_path, id: "psu_filters", method: :get) do %>
