@@ -27,7 +27,6 @@
 
 default: &default
   adapter: postgresql
-  database: dbname
   username: psuselector
   password: 123456
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
