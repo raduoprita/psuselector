@@ -43,3 +43,4 @@ test:
 production:
   <<: *default
   database: psuselector_production
+  url: <%= ENV["DATABASE_URL"] %>
