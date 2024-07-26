@@ -92,12 +92,16 @@ class ReprocessPsusJob < ApplicationJob
                    end
 
     begin
+
+      # TODO ActionCable.server.broadcast each step
+
+
       PowerSupply.where(sql_options).delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
       @driver = Selenium::WebDriver.for :chrome, options: @options
 
-      @logger.info 'Start'
+      async_message 'Start'
 
       manufacturer_links.keys.each do |link|
         @manufacturer = @manufacturer_links[link]
@@ -110,7 +114,7 @@ class ReprocessPsusJob < ApplicationJob
         when @manufacturer
           add_for_manufacturer(link)
         else
-          @logger.info "Skipping manufacturer #{@manufacturer}"
+          async_message "Skipping manufacturer #{@manufacturer}"
         end
       end
 
@@ -120,16 +124,29 @@ class ReprocessPsusJob < ApplicationJob
 
       end_time = Time.now
       duration = end_time - start_time
-      @logger.info("Finished in #{duration} ms")
+      async_message "Finished in #{duration} ms"
 
       async_redirect
     ensure
-      @logger.info 'End'
+      async_message 'End'
       @driver.quit
     end
   end
 
   private
+
+  def async_message(message)
+    # @logger.info message
+
+    ActionCable.server.broadcast(
+      'all',
+      {
+        head: 200,
+        notice: true,
+        message: message
+      }
+    )
+  end
 
   def async_redirect
     ActionCable.server.broadcast(
@@ -142,7 +159,7 @@ class ReprocessPsusJob < ApplicationJob
   end
 
   def manufacturer_links
-    @logger.info 'Getting manufacturer links'
+    async_message 'Getting manufacturer links'
 
     @manufacturer_links = {}
     @driver.navigate.to CYBENETICS_PSU_URL
@@ -150,7 +167,7 @@ class ReprocessPsusJob < ApplicationJob
     elements.each { |e| @manufacturer_links[e.attribute(:href)] = e.text }
 
     @manufacturer_links.each do |link|
-      @logger.info "found link: #{link}}"
+      async_message "found link: #{link}}"
     end
 
     @manufacturer_links.except!(@manufacturer_links.keys.last)
@@ -158,11 +175,11 @@ class ReprocessPsusJob < ApplicationJob
 
   def add_for_manufacturer(link)
     @driver.navigate.to link
-    @logger.info("_" * 50)
-    @logger.info "For brand: #{@manufacturer_links[link]}"
+    async_message "_" * 50
+    async_message "For brand: #{@manufacturer_links[link]}"
 
     ATX_MAP.each do |k, v|
-      @logger.info "Processing #{v}"
+      async_message "Processing #{@manufacturer_links[link]} - #{v}"
       add_all_for(k, v)
     end
   end
@@ -183,7 +200,7 @@ class ReprocessPsusJob < ApplicationJob
       trs.each do |tr|
         data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
         if viable?(data) || always_add_model?(data)
-          @logger.info "Got #{@manufacturer} - #{data.first}"
+          async_message "Got #{@manufacturer} - #{data.first}"
           attrs = data + [@manufacturer, atx_version]
           PSUS.update(attrs.first => PSU.new(*attrs))
         end

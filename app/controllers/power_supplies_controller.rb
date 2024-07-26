@@ -5,9 +5,6 @@ class PowerSuppliesController < ApplicationController
   # GET /power_supplies or /power_supplies.json
 
   def index
-    # TODO maybe use a pagination gem?
-    # TODO add authentication
-
     @page = (params[:page] || 1).to_i
 
     @limit = RECORDS_PER_PAGE
@@ -95,6 +92,8 @@ class PowerSuppliesController < ApplicationController
   end
 
   def reprocess
+    flash.now[:notice] = ""
+
     options = {
       manufacturer:      params[:manufacturer],
       allow_a_minus:     params[:allow_a_minus],

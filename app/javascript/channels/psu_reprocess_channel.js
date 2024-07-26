@@ -13,6 +13,10 @@ consumer.subscriptions.create("PsuReprocessChannel", {
   received(data) {
     // Called when there's incoming data on the websocket for this channel
 
+    if (data.head === 200 && data.notice === true) {
+      document.getElementById("notice").innerText = data.message;
+    }
+
     if (data.head === 302 && data.path) {
       window.location.pathname = data.path;
     }
