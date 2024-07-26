@@ -92,13 +92,16 @@ class ReprocessPsusJob < ApplicationJob
                    end
 
     begin
+      if Rails.env.production?
+        Selenium::WebDriver::Chrome.driver_path = '/app/.chrome-for-testing/chromedriver-linux64/chromedriver'
+      end
 
       PowerSupply.where(sql_options).delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
-      @options.add_argument("--headless=new")
       if Rails.env.production?
-        Selenium::WebDriver::Chrome.driver_path = 'chromedriver'
+        @options.add_argument("--no-sandbox")
+        @options.add_argument("--headless=new")
       end
       @driver = Selenium::WebDriver.for :chrome, options: @options
 
