@@ -99,6 +99,7 @@ class ReprocessPsusJob < ApplicationJob
       PowerSupply.where(sql_options).delete_all
       @options = Selenium::WebDriver::Chrome::Options.new
       @options.add_argument("--headless")
+      @options.add_argument("--headless=new")
       @driver = Selenium::WebDriver.for :chrome, options: @options
 
       async_message 'Start'
