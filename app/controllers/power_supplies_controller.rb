@@ -13,6 +13,9 @@ class PowerSuppliesController < ApplicationController
     @pag_first = offset + 1
     @pag_last  = offset + RECORDS_PER_PAGE
 
+    params[:sort] ||= "avg_noise"
+    params[:direction] ||= "asc"
+
     @sort_column    = params[:sort] || "avg_noise"
     @sort_direction = params[:direction].presence_in(%w[asc desc]) || "asc"
 
