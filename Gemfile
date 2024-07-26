@@ -9,6 +9,7 @@ gem "rails", "~> 7.1.3", ">= 7.1.3.4"
 gem 'faraday', '~> 2.9', '>= 2.9.2'
 gem 'selenium-webdriver'
 gem 'tailwindcss-rails', '~> 2.6', '>= 2.6.1'
+# gem 'mysql2', '~> 0.5.6'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -74,3 +75,5 @@ group :test do
 end
 
 gem "devise", "~> 4.9"
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
