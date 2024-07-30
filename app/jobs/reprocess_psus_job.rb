@@ -67,10 +67,10 @@ class ReprocessPsusJob < ApplicationJob
     'MWE Gold 1050W V2 ATX 3.1'
   ]
 
-  PSU     = Struct.new(
-    *PowerSupply.column_names.map(&:to_sym) - [:id, :created_at, :updated_at]
-  )
-  PSUS    = {}
+  # PSU     = Struct.new(
+  #   *PowerSupply.column_names.map(&:to_sym) - [:id, :created_at, :updated_at]
+  # )
+  # PSUS    = {}
   ATX_MAP = {
     # 'ETA & LAMBDA 230V' => 'ATX',
     'ATX V3.0 230V' => 'ATX 3.0',
@@ -122,17 +122,15 @@ class ReprocessPsusJob < ApplicationJob
         end
       end
 
-      PSUS.values.each do |data|
-        PowerSupply.create(data.to_h)
-      end
+      # PSUS.values.each do |data|
+      #   PowerSupply.create(data.to_h)
+      # end
 
+      # async_redirect
+    ensure
       end_time = Time.now
       duration = end_time - start_time
-      async_message "Finished in #{duration} ms"
-
-      async_redirect
-    ensure
-      async_message 'End'
+      async_message "Finished processing in #{duration} seconds"
       @driver.quit
     end
   end
@@ -145,8 +143,8 @@ class ReprocessPsusJob < ApplicationJob
     ActionCable.server.broadcast(
       'all',
       {
-        head: 200,
-        notice: true,
+        head:    200,
+        notice:  true,
         message: message
       }
     )
@@ -205,8 +203,25 @@ class ReprocessPsusJob < ApplicationJob
         data = tr.find_elements(:tag_name, "td").map(&:text)[0..-3]
         if viable?(data) || always_add_model?(data)
           async_message "Got #{@manufacturer} - #{data.first}"
-          attrs = data + [@manufacturer, atx_version]
-          PSUS.update(attrs.first => PSU.new(*attrs))
+          # attrs = data + [@manufacturer, atx_version]
+          # PSUS.update(attrs.first => PSU.new(*attrs))
+          PowerSupply.create(
+            model:               data[0],
+            form_factor:         data[1],
+            wattage:             data[2],
+            avg_efficiency:      data[3],
+            avg_efficiency_5vsb: data[4],
+            vampire_power:       data[5],
+            avg_pf:              data[6],
+            avg_noise:           data[7],
+            efficiency_rating:   data[8],
+            noise_rating:        data[9],
+            release_date:        data[10],
+            manufacturer:        @manufacturer,
+            atx_version:         atx_version
+          )
+
+          async_redirect
         end
       end
     end
