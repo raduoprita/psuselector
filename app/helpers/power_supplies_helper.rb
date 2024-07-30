@@ -3,7 +3,7 @@ module PowerSuppliesHelper
   def psu_filter_headers
     content_tag(:tr, nil,
       class: 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600',
-      data: { controller: 'psu-filters-form' }
+      data:  { controller: 'psu-filters-form' }
     ) do
       content_tag(:th, nil, scope: :row, class: 'text-xs px-5 py-3') do
         psu_select(:manufacturer)
