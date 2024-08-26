@@ -19,24 +19,14 @@ module PowerSuppliesHelper
         content_tag(:th) do
           psu_select(:efficiency_rating)
         end +
-        pagination_headers
+        per_page_filter_th
     end
   end
 
   private
 
-  def pagination_headers
-    if user_signed_in?
-      content_tag(:th, nil) +
-        pagination_th +
-        content_tag(:th, nil, colspan: 3)
-    else
-      content_tag(:th, nil) + pagination_th
-    end
-  end
-
-  def pagination_th
-    content_tag(:th, nil, class: 'text-right') do
+  def per_page_filter_th
+    content_tag(:th, nil, colspan: user_signed_in? ? 5 : 2, class: 'text-right') do
       "Items per page <br/>#{pagination_select}".html_safe
     end
   end
