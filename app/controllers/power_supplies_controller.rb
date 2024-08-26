@@ -1,17 +1,19 @@
 class PowerSuppliesController < ApplicationController
-  RECORDS_PER_PAGE = 10
+  DEFAULT_RECORDS_PER_PAGE = 10
   before_action :set_power_supply, only: %i[ show edit update destroy ]
 
   # GET /power_supplies or /power_supplies.json
 
   def index
+    @records_per_page = params[:per_page]&.to_i || DEFAULT_RECORDS_PER_PAGE
+
     @page = (params[:page] || 1).to_i
 
-    @limit = RECORDS_PER_PAGE
-    offset = (@page - 1) * RECORDS_PER_PAGE
+    @limit = @records_per_page
+    offset = (@page - 1) * @records_per_page
 
     @pag_first = offset + 1
-    @pag_last  = offset + RECORDS_PER_PAGE
+    @pag_last  = offset + @records_per_page
 
     params[:sort] ||= "avg_noise"
     params[:direction] ||= "asc"

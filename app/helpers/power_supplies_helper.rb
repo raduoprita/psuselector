@@ -19,7 +19,25 @@ module PowerSuppliesHelper
         content_tag(:th) do
           psu_select(:efficiency_rating)
         end +
-        content_tag(:th, nil, colspan: 5)
+        pagination_headers
+    end
+  end
+
+  private
+
+  def pagination_headers
+    if user_signed_in?
+      content_tag(:th, nil) +
+        pagination_th +
+        content_tag(:th, nil, colspan: 3)
+    else
+      content_tag(:th, nil) + pagination_th
+    end
+  end
+
+  def pagination_th
+    content_tag(:th, nil, class: 'text-right') do
+      "Items per page <br/>#{pagination_select}".html_safe
     end
   end
 
@@ -32,6 +50,18 @@ module PowerSuppliesHelper
         form:   :psu_filters,
         class:  'text-xs',
         data:   { action: "change->psu-filters-form#submit" }
+      }
+    )
+  end
+
+  def pagination_select
+    selected = @records_per_page || 'All'
+    select_tag(:per_page,
+      options_for_select([5, 10, 20, 50], selected),
+      {
+        form:  :psu_filters,
+        class: 'text-xs',
+        data:  { action: "change->psu-filters-form#submit" }
       }
     )
   end

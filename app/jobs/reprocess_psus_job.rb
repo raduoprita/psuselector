@@ -64,6 +64,7 @@ class ReprocessPsusJob < ApplicationJob
   ]
   ALWAYS_SKIP_MODEL  = [
     'RM1000x (Shift)',
+    'RM1200x (Shift)',
     'MWE Gold 1050W V2 ATX 3.1'
   ]
 
@@ -144,18 +145,18 @@ class ReprocessPsusJob < ApplicationJob
       'all',
       {
         head:    200,
-        notice:  true,
-        message: message
+        notice:  message
       }
     )
   end
 
-  def async_redirect
+  def async_redirect(notice: nil)
     ActionCable.server.broadcast(
       'all',
       {
         head: 302,
-        path: Rails.application.routes.url_helpers.power_supplies_path
+        path: Rails.application.routes.url_helpers.power_supplies_path,
+        notice: notice
       }
     )
   end
@@ -221,7 +222,7 @@ class ReprocessPsusJob < ApplicationJob
             atx_version:         atx_version
           )
 
-          async_redirect
+          async_redirect(notice: 'Processing...')
         end
       end
     end
