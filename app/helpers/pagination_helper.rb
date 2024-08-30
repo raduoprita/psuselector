@@ -87,6 +87,7 @@ module PaginationHelper
       :page,
       :sort,
       :direction,
+      :per_page,
       filters: [:manufacturer, :atx_version, :wattage, :efficiency_rating]
     )
   end
